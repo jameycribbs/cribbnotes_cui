@@ -5,7 +5,7 @@ import (
 	"github.com/jroimartin/gocui"
 )
 
-func showRec(g *gocui.Gui, v *gocui.View) error {
+func ShowRec(g *gocui.Gui, v *gocui.View) error {
 	var err error
 
 	fileId := getFileId(g, v)

@@ -39,7 +39,7 @@ func Keybindings(g *gocui.Gui) error {
 	}
 
 	// Show a record.
-	if err := g.SetKeybinding("toc", gocui.KeyEnter, gocui.ModNone, showRec); err != nil {
+	if err := g.SetKeybinding("toc", gocui.KeyEnter, gocui.ModNone, ShowRec); err != nil {
 		return err
 	}
 

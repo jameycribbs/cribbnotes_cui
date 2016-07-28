@@ -3,9 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
-	"strconv"
 
-	"github.com/jameycribbs/cribbnotes_cui/db"
 	"github.com/jameycribbs/cribbnotes_cui/kb_functions"
 	"github.com/jroimartin/gocui"
 )
@@ -32,18 +30,8 @@ func layout(g *gocui.Gui) error {
 		v.Wrap = true
 		v.Title = "[ Table of Contents ]"
 
-		recs, err := db.Search("data", "")
-		if err != nil {
-			panic(err)
-		}
-
-		for _, rec := range recs {
-			fileid, err := strconv.Atoi(rec.FileId)
-			if err != nil {
-				panic(err)
-			}
-
-			fmt.Fprintf(v, "%4d - %v\n", fileid, rec.Title)
+		if err := kb_functions.PopulateToc(g, ""); err != nil {
+			return err
 		}
 
 		if err := g.SetCurrentView("toc"); err != nil {
@@ -73,7 +61,14 @@ func layout(g *gocui.Gui) error {
 			return err
 		}
 
-		fmt.Fprint(v, "\n  Welcome to CribbNotes!")
+		tocView, err := g.View("toc")
+		if err != nil {
+			return err
+		}
+
+		if err := kb_functions.ShowRec(g, tocView); err != nil {
+			log.Panicln(err)
+		}
 
 		v.Editable = true
 		v.Wrap = true

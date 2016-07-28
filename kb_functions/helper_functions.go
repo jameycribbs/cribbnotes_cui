@@ -2,6 +2,7 @@ package kb_functions
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/jameycribbs/cribbnotes_cui/db"
@@ -20,6 +21,39 @@ func getFileId(g *gocui.Gui, v *gocui.View) string {
 	lineParts := strings.Split(line, " - ")
 
 	return strings.TrimSpace(lineParts[0])
+}
+
+func PopulateToc(g *gocui.Gui, searchStr string) error {
+	tocView, err := g.View("toc")
+	if err != nil {
+		return err
+	}
+
+	tocView.Clear()
+
+	notes, err := db.Search("data", searchStr)
+	if err != nil {
+		return err
+	}
+
+	for _, note := range notes {
+		fileid, err := strconv.Atoi(note.FileId)
+		if err != nil {
+			return err
+		}
+
+		fmt.Fprintf(tocView, "%4d - %v\n", fileid, note.Title)
+	}
+
+	if err := tocView.SetCursor(0, 0); err != nil {
+		return err
+	}
+
+	if err := tocView.SetOrigin(0, 0); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func showRecInMainView(g *gocui.Gui, v *gocui.View, rec *db.Record) error {

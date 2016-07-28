@@ -1,8 +1,6 @@
 package kb_functions
 
 import (
-	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/jameycribbs/cribbnotes_cui/db"
@@ -44,33 +42,8 @@ func deleteRec(g *gocui.Gui, v *gocui.View) error {
 		return nil
 	}
 
-	tocView, err := g.View("toc")
-	if err != nil {
+	if err := PopulateToc(g, ""); err != nil {
 		return err
-	}
-
-	tocView.Clear()
-
-	if err := tocView.SetCursor(0, 0); err != nil {
-		return err
-	}
-
-	if err := tocView.SetOrigin(0, 0); err != nil {
-		return err
-	}
-
-	recs, err := db.Search("data", "")
-	if err != nil {
-		return err
-	}
-
-	for _, rec := range recs {
-		fileid, err := strconv.Atoi(rec.FileId)
-		if err != nil {
-			panic(err)
-		}
-
-		fmt.Fprintf(tocView, "%4d - %v\n", fileid, rec.Title)
 	}
 
 	if err := g.SetCurrentView("toc"); err != nil {
