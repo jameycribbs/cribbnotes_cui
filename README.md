@@ -2,7 +2,7 @@ Keywords: Golang, go, cui, notes
 
 ### CribbNotes - A console-user-interface application that allows you to take and search for notes
 
-CribbNotes is a simple note taking application written in Go.
+CribbNotes is a simple note taking application written in Go.  It uses the awesome cui library, gocui (https://github.com/jroimartin/gocui).  I can't thank the developers of gocui for building such a wonderful, useful library.
 
 <p align="center">
   <img src="cribbnotes_cui.png" width="890" height="668" alt="CribbNotes Example App" />
