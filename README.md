@@ -5,7 +5,7 @@ Keywords: Golang, go, cui, notes
 CribbNotes is a simple note taking application written in Go.
 
 <p align="center">
-  <img src="cribbnotes_cui_screenshot.png" width="890" height="668" alt="CribbNotes Example App" />
+  <img src="cribbnotes_cui.png" width="890" height="668" alt="CribbNotes Example App" />
 </p>
 
 ### How to install
