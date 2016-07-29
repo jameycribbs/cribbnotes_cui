@@ -22,10 +22,10 @@ func AbortNewTitle(g *gocui.Gui, v *gocui.View) error {
 	return nil
 }
 
-func createRec(g *gocui.Gui, v *gocui.View) error {
+func createNote(g *gocui.Gui, v *gocui.View) error {
 	newTitleView, err := g.View("newTitle")
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	title := strings.TrimSuffix(newTitleView.ViewBuffer(), "\n")
@@ -40,7 +40,6 @@ func createRec(g *gocui.Gui, v *gocui.View) error {
 		if err := g.SetCurrentView("toc"); err != nil {
 			return err
 		}
-
 		return nil
 	}
 
@@ -58,8 +57,9 @@ func createRec(g *gocui.Gui, v *gocui.View) error {
 
 	intFileId, err := strconv.Atoi(fileId)
 	if err != nil {
-		panic(err)
+		return err
 	}
+
 	fmt.Fprintf(tocView, "%4d - %v\n", intFileId, rec.Title)
 
 	for {
@@ -71,19 +71,22 @@ func createRec(g *gocui.Gui, v *gocui.View) error {
 			}
 		}
 
-		nextFileId := getFileId(g, tocView)
+		nextFileId, err := getFileId(g, "toc")
+		if err != nil {
+			return err
+		}
 
 		if nextFileId == fileId {
 			break
 		}
 	}
 
-	showRecInMainView(g, v, &rec)
+	showNoteInNoteView(g, &rec)
 	if err != nil {
 		return err
 	}
 
-	if err := g.SetCurrentView("main"); err != nil {
+	if err := g.SetCurrentView("note"); err != nil {
 		return err
 	}
 
@@ -93,21 +96,11 @@ func createRec(g *gocui.Gui, v *gocui.View) error {
 }
 
 func newRec(g *gocui.Gui, v *gocui.View) error {
-	maxX, maxY := g.Size()
-
-	if newTitleView, err := g.SetView("newTitle", maxX/2-30, maxY/2, maxX/2+30, maxY/2+2); err != nil {
-		if err != gocui.ErrUnknownView {
-			return err
-		}
-
-		newTitleView.Title = "Title"
-		newTitleView.Editable = true
-
-		updateStatus(g, "Enter a title for the new note.  Press [Enter] when done.")
-
-		if err := g.SetCurrentView("newTitle"); err != nil {
-			return err
-		}
+	if err := createInputView(g, "newTitle", "Enter title for new note:"); err != nil {
+		return err
 	}
+
+	updateStatus(g, "Enter a title for the new note.  Press [Enter] when done.")
+
 	return nil
 }

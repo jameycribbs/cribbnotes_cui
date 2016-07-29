@@ -7,25 +7,22 @@ import (
 	"github.com/jroimartin/gocui"
 )
 
-func saveRec(g *gocui.Gui, v *gocui.View) error {
-	tocView, err := g.View("toc")
+func saveNote(g *gocui.Gui, v *gocui.View) error {
+	fileId, err := getFileId(g, "toc")
 	if err != nil {
-		panic(err)
+		return err
 	}
-
-	fileId := getFileId(g, tocView)
 
 	rec, err := db.Find("data", fileId)
 	if err != nil {
 		return err
 	}
 
-	rec.Text = v.ViewBuffer()
+	rec.Text = v.Buffer()
 
 	rec.UpdatedAt = time.Now()
 
-	err = db.Update("data", rec, fileId)
-	if err != nil {
+	if err := db.Update("data", rec, fileId); err != nil {
 		return err
 	}
 

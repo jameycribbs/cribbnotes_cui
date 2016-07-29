@@ -5,18 +5,20 @@ import (
 	"github.com/jroimartin/gocui"
 )
 
-func ShowRec(g *gocui.Gui, v *gocui.View) error {
+func ShowNote(g *gocui.Gui) error {
 	var err error
 
-	fileId := getFileId(g, v)
-
-	rec, err := db.Find("data", fileId)
+	fileId, err := getFileId(g, "toc")
 	if err != nil {
 		return err
 	}
 
-	showRecInMainView(g, v, rec)
+	note, err := db.Find("data", fileId)
 	if err != nil {
+		return err
+	}
+
+	if err := showNoteInNoteView(g, note); err != nil {
 		return err
 	}
 

@@ -9,18 +9,40 @@ import (
 	"github.com/jroimartin/gocui"
 )
 
-func getFileId(g *gocui.Gui, v *gocui.View) string {
-	var line string
-	var err error
+func createInputView(g *gocui.Gui, vName string, vTitle string) error {
+	maxX, maxY := g.Size()
+
+	if v, err := g.SetView(vName, maxX/2-30, maxY/2, maxX/2+30, maxY/2+2); err != nil {
+		if err != gocui.ErrUnknownView {
+			return err
+		}
+
+		v.Title = vTitle
+		v.Editable = true
+
+		if err := g.SetCurrentView(vName); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func getFileId(g *gocui.Gui, vName string) (string, error) {
+	v, err := g.View(vName)
+	if err != nil {
+		return "", err
+	}
 
 	_, cy := v.Cursor()
-	if line, err = v.Line(cy); err != nil {
-		panic(err)
+
+	line, err := v.Line(cy)
+	if err != nil {
+		return "", err
 	}
 
 	lineParts := strings.Split(line, " - ")
 
-	return strings.TrimSpace(lineParts[0])
+	return strings.TrimSpace(lineParts[0]), nil
 }
 
 func PopulateToc(g *gocui.Gui, searchStr string) error {
@@ -56,21 +78,21 @@ func PopulateToc(g *gocui.Gui, searchStr string) error {
 	return nil
 }
 
-func showRecInMainView(g *gocui.Gui, v *gocui.View, rec *db.Record) error {
+func showNoteInNoteView(g *gocui.Gui, rec *db.Record) error {
 	var err error
 
-	mainView, err := g.View("main")
+	noteView, err := g.View("note")
 	if err != nil {
 		return err
 	}
 
-	mainView.Clear()
+	noteView.Clear()
 
-	fmt.Fprintf(mainView, "%s", rec.Text)
+	fmt.Fprintf(noteView, "%s", rec.Text)
 
-	mainView.Title = "[ Title: " + rec.Title + "    Note #: " + rec.FileId + " ]"
+	noteView.Title = "[ Title: " + rec.Title + "    Note #: " + rec.FileId + " ]"
 
-	if err := mainView.SetCursor(0, 0); err != nil {
+	if err := noteView.SetCursor(0, 0); err != nil {
 		return err
 	}
 

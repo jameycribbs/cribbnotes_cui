@@ -15,14 +15,13 @@ func AbortGetFileIdToDelete(g *gocui.Gui, v *gocui.View) error {
 	if err := g.SetCurrentView("toc"); err != nil {
 		return err
 	}
-
 	return nil
 }
 
 func deleteRec(g *gocui.Gui, v *gocui.View) error {
 	fileIdToDeleteView, err := g.View("fileIdToDelete")
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	fileId := strings.TrimSuffix(fileIdToDeleteView.ViewBuffer(), "\n")
@@ -31,13 +30,12 @@ func deleteRec(g *gocui.Gui, v *gocui.View) error {
 		return err
 	}
 
-	err = db.Delete("data", fileId)
-	if err != nil {
-		updateStatus(g, "Error trying to delete note # "+fileId+" - "+err.Error())
-
+	if err := db.Delete("data", fileId); err != nil {
 		if err := g.SetCurrentView("toc"); err != nil {
 			return err
 		}
+
+		updateStatus(g, "Error trying to delete note # "+fileId+" - "+err.Error())
 
 		return nil
 	}
@@ -56,21 +54,11 @@ func deleteRec(g *gocui.Gui, v *gocui.View) error {
 }
 
 func getFileIdToDelete(g *gocui.Gui, v *gocui.View) error {
-	maxX, maxY := g.Size()
-
-	if fileIdToDeleteView, err := g.SetView("fileIdToDelete", maxX/2-30, maxY/2, maxX/2+30, maxY/2+2); err != nil {
-		if err != gocui.ErrUnknownView {
-			return err
-		}
-
-		fileIdToDeleteView.Title = "Enter note number to delete:"
-		fileIdToDeleteView.Editable = true
-
-		updateStatus(g, "Enter a note number to delete.  Press [Enter] to delete the note.")
-
-		if err := g.SetCurrentView("fileIdToDelete"); err != nil {
-			return err
-		}
+	if err := createInputView(g, "fileIdToDelete", "Enter note number to delete:"); err != nil {
+		return err
 	}
+
+	updateStatus(g, "Enter a note number to delete.  Press [Enter] to delete the note.")
+
 	return nil
 }
