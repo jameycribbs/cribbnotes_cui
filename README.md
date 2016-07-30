@@ -17,7 +17,7 @@ go get github.com/jameycribbs/cribbnotes_cui
 - go get any dependencies
 - go build cribbnotes_cui.go
 - create a directory where you want to store your notes
-- open a terminal, cd to the directory where the executable resides and run it, making sure you supply a command-line argument for the lcoation of the data directory
+- open a terminal, cd to the directory where the executable resides and run it, making sure you supply a command-line argument for the location of the data directory
 
 
 ### Contributions welcome!

@@ -12,7 +12,7 @@ func noteTitleLayout(g *gocui.Gui) error {
 		if err != gocui.ErrUnknownView {
 			return err
 		}
-		v.Frame = true
+		v.Frame = false
 	}
 
 	return nil
@@ -25,7 +25,7 @@ func noteNumberLayout(g *gocui.Gui) error {
 		if err != gocui.ErrUnknownView {
 			return err
 		}
-		v.Frame = true
+		v.Frame = false
 	}
 
 	return nil

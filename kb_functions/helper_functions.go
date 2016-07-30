@@ -127,8 +127,8 @@ func showNoteInNoteView(g *gocui.Gui, rec *db.Record) error {
 		return err
 	}
 
-	fmt.Fprintf(noteTitleView, " Note Title: %s", rec.Title)
-	fmt.Fprintf(noteNumberView, " Note #: %s", rec.FileId)
+	fmt.Fprintf(noteTitleView, " \x1b[0;32mNote Title: \x1b[0;37m%s", rec.Title)
+	fmt.Fprintf(noteNumberView, " \x1b[0;32mNote #: \x1b[0;37m%s", rec.FileId)
 	fmt.Fprintf(noteView, "%s", rec.Text)
 
 	if err := noteView.SetCursor(0, 0); err != nil {

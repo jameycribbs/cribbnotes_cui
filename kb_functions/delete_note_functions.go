@@ -16,10 +16,9 @@ func deleteRec(g *gocui.Gui, v *gocui.View) error {
 
 	if err := db.Delete(config.DataDir, fileId); err != nil {
 		if err := g.SetCurrentView("toc"); err != nil {
-			return err
+			return errors.New("(deleteRec) error setting current view to toc " + err.Error())
 		}
-
-		return errors.New("Error trying to delete note # " + fileId + " - " + err.Error())
+		return err
 	}
 
 	if err := PopulateToc(g, ""); err != nil {
@@ -27,10 +26,6 @@ func deleteRec(g *gocui.Gui, v *gocui.View) error {
 	}
 
 	if err := ShowNote(g); err != nil {
-		return err
-	}
-
-	if err := g.SetCurrentView("toc"); err != nil {
 		return err
 	}
 
