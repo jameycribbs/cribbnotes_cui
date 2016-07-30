@@ -51,12 +51,12 @@ func cursorUp(g *gocui.Gui, v *gocui.View) error {
 
 func nextView(g *gocui.Gui, v *gocui.View) error {
 	if v == nil || v.Name() == "toc" {
-		updateStatus(g, "Ctrl+s - save note")
+		updateStatus(g, "Ctrl+s to save note.")
 
 		return g.SetCurrentView("note")
 	}
 
-	updateStatus(g, "j/k - scroll | Enter - view note")
+	updateStatus(g, "")
 
 	return g.SetCurrentView("toc")
 }

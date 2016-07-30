@@ -15,6 +15,14 @@ func Layout(g *gocui.Gui) error {
 		return err
 	}
 
+	if err := noteTitleLayout(g); err != nil {
+		return err
+	}
+
+	if err := noteNumberLayout(g); err != nil {
+		return err
+	}
+
 	if err := noteLayout(g); err != nil {
 		return err
 	}

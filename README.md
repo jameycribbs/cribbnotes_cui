@@ -17,8 +17,7 @@ go get github.com/jameycribbs/cribbnotes_cui
 - go get any dependencies
 - go build cribbnotes_cui.go
 - create a directory where you want to store your notes
-- copy config.json.example to config.json in the directory where you are going to run the cribbnotes executable and edit it to reflect the data directory where your notes will be stored
-- open a terminal, cd to the directory where the executable resides and run it
+- open a terminal, cd to the directory where the executable resides and run it, making sure you supply a command-line argument for the lcoation of the data directory
 
 
 ### Contributions welcome!

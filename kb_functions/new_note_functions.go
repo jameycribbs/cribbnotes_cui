@@ -6,6 +6,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/jameycribbs/cribbnotes_cui/config"
 	"github.com/jameycribbs/cribbnotes_cui/db"
 	"github.com/jroimartin/gocui"
 )
@@ -45,7 +46,7 @@ func createNote(g *gocui.Gui, v *gocui.View) error {
 
 	rec := db.Record{Title: title, CreatedAt: time.Now(), UpdatedAt: time.Now()}
 
-	fileId, err := db.Create("data", &rec)
+	fileId, err := db.Create(config.DataDir, &rec)
 	if err != nil {
 		return err
 	}

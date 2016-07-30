@@ -16,7 +16,6 @@ func headlineLayout(g *gocui.Gui) error {
 			return err
 		}
 		fmt.Fprintf(v, " CribbNotes v%v", currentVersion)
-		v.Frame = true
 	}
 
 	return nil

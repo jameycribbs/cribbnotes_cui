@@ -1,6 +1,7 @@
 package kb_functions
 
 import (
+	"errors"
 	"strings"
 
 	"github.com/jroimartin/gocui"
@@ -20,7 +21,7 @@ func AbortSearch(g *gocui.Gui, v *gocui.View) error {
 func findNotes(g *gocui.Gui, v *gocui.View) error {
 	searchView, err := g.View("search")
 	if err != nil {
-		return err
+		return errors.New("error grabbing handle to search view: " + err.Error())
 	}
 
 	searchStr := strings.TrimSuffix(searchView.ViewBuffer(), "\n")
@@ -28,7 +29,7 @@ func findNotes(g *gocui.Gui, v *gocui.View) error {
 	updateStatus(g, "Searched for '"+searchStr+"'.")
 
 	if err := g.DeleteView("search"); err != nil {
-		return err
+		return errors.New("error deleting search view: " + err.Error())
 	}
 
 	if err := PopulateToc(g, searchStr); err != nil {
@@ -36,7 +37,7 @@ func findNotes(g *gocui.Gui, v *gocui.View) error {
 	}
 
 	if err := g.SetCurrentView("toc"); err != nil {
-		return err
+		return errors.New("error setting current view to toc: " + err.Error())
 	}
 
 	if err := ShowNote(g); err != nil {

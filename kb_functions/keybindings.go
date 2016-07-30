@@ -73,29 +73,16 @@ func Keybindings(g *gocui.Gui) error {
 		return err
 	}
 
-	// Get file id to delete.
-	if err := g.SetKeybinding("toc", gocui.KeyCtrlD, gocui.ModNone, getFileIdToDelete); err != nil {
-		return err
-	}
-	if err := g.SetKeybinding("note", gocui.KeyCtrlD, gocui.ModNone, getFileIdToDelete); err != nil {
-		return err
-	}
-
-	// Abort get file id to delete.
-	if err := g.SetKeybinding("fileIdToDelete", gocui.KeyCtrlD, gocui.ModNone, AbortGetFileIdToDelete); err != nil {
-		return err
-	}
-
 	// Delete record.
-	if err := g.SetKeybinding("fileIdToDelete", gocui.KeyEnter, gocui.ModNone, deleteRec); err != nil {
+	if err := g.SetKeybinding("toc", gocui.KeyCtrlD, gocui.ModNone, deleteRec); err != nil {
+		return err
+	}
+	if err := g.SetKeybinding("note", gocui.KeyCtrlD, gocui.ModNone, deleteRec); err != nil {
 		return err
 	}
 
 	// Search string.
 	if err := g.SetKeybinding("toc", slashKey, gocui.ModNone, searchString); err != nil {
-		return err
-	}
-	if err := g.SetKeybinding("note", slashKey, gocui.ModNone, searchString); err != nil {
 		return err
 	}
 

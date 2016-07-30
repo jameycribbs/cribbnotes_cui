@@ -3,6 +3,7 @@ package kb_functions
 import (
 	"time"
 
+	"github.com/jameycribbs/cribbnotes_cui/config"
 	"github.com/jameycribbs/cribbnotes_cui/db"
 	"github.com/jroimartin/gocui"
 )
@@ -13,7 +14,7 @@ func saveNote(g *gocui.Gui, v *gocui.View) error {
 		return err
 	}
 
-	rec, err := db.Find("data", fileId)
+	rec, err := db.Find(config.DataDir, fileId)
 	if err != nil {
 		return err
 	}
@@ -22,7 +23,7 @@ func saveNote(g *gocui.Gui, v *gocui.View) error {
 
 	rec.UpdatedAt = time.Now()
 
-	if err := db.Update("data", rec, fileId); err != nil {
+	if err := db.Update(config.DataDir, rec, fileId); err != nil {
 		return err
 	}
 
