@@ -3,7 +3,7 @@ package kb_functions
 import "github.com/jroimartin/gocui"
 
 func Keybindings(g *gocui.Gui) error {
-	var hKey, iKey, jKey, kKey, lKey rune = 104, 105, 106, 107, 108
+	var OKey, aKey, hKey, iKey, jKey, kKey, lKey, oKey rune = 79, 97, 104, 105, 106, 107, 108, 111
 
 	// Navigate between toc and note views.
 	if err := g.SetKeybinding("toc", gocui.KeyEnter, gocui.ModNone, nextView); err != nil {
@@ -100,13 +100,13 @@ func Keybindings(g *gocui.Gui) error {
 	}
 
 	// Navigation inside note view
+	if err := g.SetKeybinding("note", gocui.KeyCtrlC, gocui.ModNone, noteDisableEditable); err != nil {
+		return err
+	}
 	if err := g.SetKeybinding("note", hKey, gocui.ModNone, noteCursorLeft); err != nil {
 		return err
 	}
 	if err := g.SetKeybinding("note", iKey, gocui.ModNone, noteEnableEditable); err != nil {
-		return err
-	}
-	if err := g.SetKeybinding("note", gocui.KeyCtrlC, gocui.ModNone, noteDisableEditable); err != nil {
 		return err
 	}
 	if err := g.SetKeybinding("note", jKey, gocui.ModNone, noteCursorDown); err != nil {
@@ -116,6 +116,15 @@ func Keybindings(g *gocui.Gui) error {
 		return err
 	}
 	if err := g.SetKeybinding("note", lKey, gocui.ModNone, noteCursorRight); err != nil {
+		return err
+	}
+	if err := g.SetKeybinding("note", aKey, gocui.ModNone, noteEnableEditableNextChar); err != nil {
+		return err
+	}
+	if err := g.SetKeybinding("note", OKey, gocui.ModNone, noteEnableEditableInsertAbove); err != nil {
+		return err
+	}
+	if err := g.SetKeybinding("note", oKey, gocui.ModNone, noteEnableEditableInsertBelow); err != nil {
 		return err
 	}
 
