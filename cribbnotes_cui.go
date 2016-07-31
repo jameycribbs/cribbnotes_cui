@@ -7,7 +7,7 @@ import (
 
 	"github.com/jameycribbs/cribbnotes_cui/config"
 	"github.com/jameycribbs/cribbnotes_cui/db"
-	"github.com/jameycribbs/cribbnotes_cui/kb_functions"
+	"github.com/jameycribbs/cribbnotes_cui/kbFunctions"
 	"github.com/jameycribbs/cribbnotes_cui/layouts"
 	"github.com/jroimartin/gocui"
 )
@@ -45,8 +45,18 @@ func main() {
 
 	g.SetLayout(layouts.Layout)
 
-	if err := kb_functions.Keybindings(g); err != nil {
+	if err := kbFunctions.KeybindingsCommon(g); err != nil {
 		panic(err)
+	}
+
+	if config.VimMode {
+		if err := kbFunctions.KeybindingsVim(g); err != nil {
+			panic(err)
+		}
+	} else {
+		if err := kbFunctions.KeybindingsNonVim(g); err != nil {
+			panic(err)
+		}
 	}
 
 	g.SelBgColor = gocui.ColorGreen

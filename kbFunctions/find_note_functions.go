@@ -1,4 +1,4 @@
-package kb_functions
+package kbFunctions
 
 import (
 	"errors"
@@ -7,6 +7,7 @@ import (
 	"github.com/jroimartin/gocui"
 )
 
+// AbortSearch deletes the search dialog.
 func AbortSearch(g *gocui.Gui, v *gocui.View) error {
 	if err := g.DeleteView("search"); err != nil {
 		return errors.New("(AbortSearch) error deleting search view " + err.Error())

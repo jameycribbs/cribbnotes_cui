@@ -1,4 +1,4 @@
-package kb_functions
+package kbFunctions
 
 import (
 	"strings"
@@ -9,6 +9,7 @@ import (
 	"github.com/jroimartin/gocui"
 )
 
+// AbortNewTitle deletes the new title dialog.
 func AbortNewTitle(g *gocui.Gui, v *gocui.View) error {
 	if err := g.DeleteView("newTitle"); err != nil {
 		return err
@@ -44,7 +45,7 @@ func createNote(g *gocui.Gui, v *gocui.View) error {
 
 	rec := db.Record{Title: title, CreatedAt: time.Now(), UpdatedAt: time.Now()}
 
-	fileId, err := db.Create(config.DataDir, &rec)
+	fileID, err := db.Create(config.DataDir, &rec)
 	if err != nil {
 		return err
 	}
@@ -53,7 +54,7 @@ func createNote(g *gocui.Gui, v *gocui.View) error {
 		return err
 	}
 
-	if err := scrollToFileId(g, fileId); err != nil {
+	if err := scrollToFileID(g, fileID); err != nil {
 		return err
 	}
 
@@ -65,8 +66,6 @@ func createNote(g *gocui.Gui, v *gocui.View) error {
 	if err := g.SetCurrentView("note"); err != nil {
 		return err
 	}
-
-	updateStatus(g, "Ctrl+s - save note")
 
 	return nil
 }

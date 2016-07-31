@@ -1,4 +1,4 @@
-package kb_functions
+package kbFunctions
 
 import (
 	"errors"
@@ -9,12 +9,12 @@ import (
 )
 
 func deleteRec(g *gocui.Gui, v *gocui.View) error {
-	fileId, err := getFileId(g, "toc")
+	fileID, err := getFileID(g, "toc")
 	if err != nil {
 		return err
 	}
 
-	if err := db.Delete(config.DataDir, fileId); err != nil {
+	if err := db.Delete(config.DataDir, fileID); err != nil {
 		if err := g.SetCurrentView("toc"); err != nil {
 			return errors.New("(deleteRec) error setting current view to toc " + err.Error())
 		}
@@ -29,7 +29,7 @@ func deleteRec(g *gocui.Gui, v *gocui.View) error {
 		return err
 	}
 
-	updateStatus(g, "Note # "+fileId+" deleted.")
+	updateStatus(g, "Note # "+fileID+" deleted.")
 
 	return nil
 }

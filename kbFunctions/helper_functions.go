@@ -1,4 +1,4 @@
-package kb_functions
+package kbFunctions
 
 import (
 	"errors"
@@ -42,10 +42,10 @@ func createInputView(g *gocui.Gui, vName string, vTitle string) error {
 	return nil
 }
 
-func getFileId(g *gocui.Gui, vName string) (string, error) {
+func getFileID(g *gocui.Gui, vName string) (string, error) {
 	v, err := g.View(vName)
 	if err != nil {
-		return "", errors.New("error grabbing handle to view in getFileId: " + err.Error())
+		return "", errors.New("error grabbing handle to view in getFileID: " + err.Error())
 	}
 
 	_, cy := v.Cursor()
@@ -82,6 +82,7 @@ func getNoteViews(g *gocui.Gui) (*gocui.View, *gocui.View, *gocui.View, error) {
 	return noteTitleView, noteNumberView, noteView, nil
 }
 
+// PopulateToc searches for notes and populates the table of contents.
 func PopulateToc(g *gocui.Gui, searchStr string) error {
 	tocView, err := g.View("toc")
 	if err != nil {
@@ -96,12 +97,12 @@ func PopulateToc(g *gocui.Gui, searchStr string) error {
 	}
 
 	for _, note := range notes {
-		fileid, err := strconv.Atoi(note.FileId)
+		fileID, err := strconv.Atoi(note.FileID)
 		if err != nil {
-			return errors.New("error converting fileid to int: " + err.Error())
+			return errors.New("error converting fileID to int: " + err.Error())
 		}
 
-		fmt.Fprintf(tocView, "%4d - %v\n", fileid, note.Title)
+		fmt.Fprintf(tocView, "%4d - %v\n", fileID, note.Title)
 	}
 
 	if err := tocView.SetCursor(0, 0); err != nil {
@@ -128,7 +129,7 @@ func showNoteInNoteView(g *gocui.Gui, rec *db.Record) error {
 	}
 
 	fmt.Fprintf(noteTitleView, " \x1b[0;32mNote Title: \x1b[0;37m%s", rec.Title)
-	fmt.Fprintf(noteNumberView, " \x1b[0;32mNote #: \x1b[0;37m%s", rec.FileId)
+	fmt.Fprintf(noteNumberView, " \x1b[0;32mNote #: \x1b[0;37m%s", rec.FileID)
 	fmt.Fprintf(noteView, "%s", rec.Text)
 
 	if err := noteView.SetCursor(0, 0); err != nil {
@@ -138,7 +139,7 @@ func showNoteInNoteView(g *gocui.Gui, rec *db.Record) error {
 	return nil
 }
 
-func scrollToFileId(g *gocui.Gui, fileId string) error {
+func scrollToFileID(g *gocui.Gui, fileID string) error {
 	tocView, err := g.View("toc")
 	if err != nil {
 		return err
@@ -153,12 +154,12 @@ func scrollToFileId(g *gocui.Gui, fileId string) error {
 			}
 		}
 
-		nextFileId, err := getFileId(g, "toc")
+		nextFileID, err := getFileID(g, "toc")
 		if err != nil {
 			return err
 		}
 
-		if nextFileId == fileId {
+		if nextFileID == fileID {
 			break
 		}
 	}

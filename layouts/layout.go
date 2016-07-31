@@ -2,6 +2,7 @@ package layouts
 
 import "github.com/jroimartin/gocui"
 
+// Layout calls all the individual layout functions to create all the views.
 func Layout(g *gocui.Gui) error {
 	if err := headlineLayout(g); err != nil {
 		return err

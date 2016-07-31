@@ -1,4 +1,4 @@
-package kb_functions
+package kbFunctions
 
 import (
 	"time"
@@ -9,12 +9,12 @@ import (
 )
 
 func saveNote(g *gocui.Gui, v *gocui.View) error {
-	fileId, err := getFileId(g, "toc")
+	fileID, err := getFileID(g, "toc")
 	if err != nil {
 		return err
 	}
 
-	rec, err := db.Find(config.DataDir, fileId)
+	rec, err := db.Find(config.DataDir, fileID)
 	if err != nil {
 		return err
 	}
@@ -23,7 +23,7 @@ func saveNote(g *gocui.Gui, v *gocui.View) error {
 
 	rec.UpdatedAt = time.Now()
 
-	if err := db.Update(config.DataDir, rec, fileId); err != nil {
+	if err := db.Update(config.DataDir, rec, fileID); err != nil {
 		return err
 	}
 

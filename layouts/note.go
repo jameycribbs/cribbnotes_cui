@@ -2,7 +2,7 @@ package layouts
 
 import (
 	"github.com/jameycribbs/cribbnotes_cui/config"
-	"github.com/jameycribbs/cribbnotes_cui/kb_functions"
+	"github.com/jameycribbs/cribbnotes_cui/kbFunctions"
 	"github.com/jroimartin/gocui"
 )
 
@@ -40,7 +40,7 @@ func noteLayout(g *gocui.Gui) error {
 			return err
 		}
 
-		if err := kb_functions.ShowNote(g); err != nil {
+		if err := kbFunctions.ShowNote(g); err != nil {
 			return err
 		}
 

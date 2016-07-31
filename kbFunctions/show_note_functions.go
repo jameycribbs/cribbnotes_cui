@@ -1,4 +1,4 @@
-package kb_functions
+package kbFunctions
 
 import (
 	"errors"
@@ -8,6 +8,7 @@ import (
 	"github.com/jroimartin/gocui"
 )
 
+// ShowNote shows the current note in the note view.
 func ShowNote(g *gocui.Gui) error {
 	var err error
 
@@ -15,16 +16,16 @@ func ShowNote(g *gocui.Gui) error {
 		return err
 	}
 
-	fileId, err := getFileId(g, "toc")
+	fileID, err := getFileID(g, "toc")
 	if err != nil {
 		return err
 	}
 
-	if fileId == "" {
+	if fileID == "" {
 		return nil
 	}
 
-	note, err := db.Find(config.DataDir, fileId)
+	note, err := db.Find(config.DataDir, fileID)
 	if err != nil {
 		return errors.New("error on db.Find: " + err.Error())
 	}

@@ -1,7 +1,7 @@
 package layouts
 
 import (
-	"github.com/jameycribbs/cribbnotes_cui/kb_functions"
+	"github.com/jameycribbs/cribbnotes_cui/kbFunctions"
 	"github.com/jroimartin/gocui"
 )
 
@@ -17,7 +17,7 @@ func tocLayout(g *gocui.Gui) error {
 		v.Wrap = true
 		v.Title = "[ Table of Contents ]"
 
-		if err := kb_functions.PopulateToc(g, ""); err != nil {
+		if err := kbFunctions.PopulateToc(g, ""); err != nil {
 			return err
 		}
 
