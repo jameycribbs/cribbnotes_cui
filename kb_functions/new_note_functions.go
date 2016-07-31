@@ -1,8 +1,6 @@
 package kb_functions
 
 import (
-	"fmt"
-	"strconv"
 	"strings"
 	"time"
 
@@ -51,35 +49,12 @@ func createNote(g *gocui.Gui, v *gocui.View) error {
 		return err
 	}
 
-	tocView, err := g.View("toc")
-	if err != nil {
+	if err := PopulateToc(g, ""); err != nil {
 		return err
 	}
 
-	intFileId, err := strconv.Atoi(fileId)
-	if err != nil {
+	if err := scrollToFileId(g, fileId); err != nil {
 		return err
-	}
-
-	fmt.Fprintf(tocView, "%4d - %v\n", intFileId, rec.Title)
-
-	for {
-		cx, cy := tocView.Cursor()
-		if err := tocView.SetCursor(cx, cy+1); err != nil {
-			ox, oy := tocView.Origin()
-			if err := tocView.SetOrigin(ox, oy+1); err != nil {
-				return err
-			}
-		}
-
-		nextFileId, err := getFileId(g, "toc")
-		if err != nil {
-			return err
-		}
-
-		if nextFileId == fileId {
-			break
-		}
 	}
 
 	showNoteInNoteView(g, &rec)

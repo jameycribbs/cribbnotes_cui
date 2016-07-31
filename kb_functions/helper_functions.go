@@ -138,6 +138,33 @@ func showNoteInNoteView(g *gocui.Gui, rec *db.Record) error {
 	return nil
 }
 
+func scrollToFileId(g *gocui.Gui, fileId string) error {
+	tocView, err := g.View("toc")
+	if err != nil {
+		return err
+	}
+
+	for {
+		cx, cy := tocView.Cursor()
+		if err := tocView.SetCursor(cx, cy+1); err != nil {
+			ox, oy := tocView.Origin()
+			if err := tocView.SetOrigin(ox, oy+1); err != nil {
+				return err
+			}
+		}
+
+		nextFileId, err := getFileId(g, "toc")
+		if err != nil {
+			return err
+		}
+
+		if nextFileId == fileId {
+			break
+		}
+	}
+	return nil
+}
+
 func updateStatus(g *gocui.Gui, msg string) error {
 	statusView, err := g.View("status")
 	if err != nil {

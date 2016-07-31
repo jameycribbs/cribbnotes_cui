@@ -28,7 +28,7 @@ func keybindingsLayout(g *gocui.Gui) error {
 		fmt.Fprintln(v, "[Ctrl+j/Ctrl+k] - switch views")
 		fmt.Fprintln(v, "")
 
-		fmt.Fprintln(v, "[/]             - find notes")
+		fmt.Fprintln(v, "[Ctrl+/]        - find notes")
 		fmt.Fprintln(v, "[Ctrl+n]        - new note")
 		fmt.Fprintln(v, "[Ctrl+s]        - save note")
 		fmt.Fprintln(v, "[Ctrl+d]        - delete note")

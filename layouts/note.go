@@ -1,6 +1,7 @@
 package layouts
 
 import (
+	"github.com/jameycribbs/cribbnotes_cui/config"
 	"github.com/jameycribbs/cribbnotes_cui/kb_functions"
 	"github.com/jroimartin/gocui"
 )
@@ -43,7 +44,7 @@ func noteLayout(g *gocui.Gui) error {
 			return err
 		}
 
-		v.Editable = true
+		v.Editable = !config.VimMode
 		v.Wrap = true
 		v.Frame = false
 	}

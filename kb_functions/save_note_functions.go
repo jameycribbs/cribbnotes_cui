@@ -29,5 +29,8 @@ func saveNote(g *gocui.Gui, v *gocui.View) error {
 
 	updateStatus(g, "Note saved!")
 
+	if err := g.SetCurrentView("toc"); err != nil {
+		return err
+	}
 	return nil
 }
