@@ -6,7 +6,7 @@ import (
 	"github.com/jroimartin/gocui"
 )
 
-var currentVersion = "0.10"
+var currentVersion = "1.0"
 
 func headlineLayout(g *gocui.Gui) error {
 	maxX, _ := g.Size()

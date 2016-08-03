@@ -93,5 +93,26 @@ func KeybindingsVim(g *gocui.Gui) error {
 	if err := g.SetKeybinding("note", xKey, gocui.ModNone, noteDeleteChar); err != nil {
 		return err
 	}
+
+	// Navigation inside edit note title view
+	if err := g.SetKeybinding("editNoteTitle", aKey, gocui.ModNone, noteTitleEnableEditableNextChar); err != nil {
+		return err
+	}
+	if err := g.SetKeybinding("editNoteTitle", hKey, gocui.ModNone, noteTitleCursorLeft); err != nil {
+		return err
+	}
+	if err := g.SetKeybinding("editNoteTitle", iKey, gocui.ModNone, noteTitleEnableEditable); err != nil {
+		return err
+	}
+	if err := g.SetKeybinding("editNoteTitle", lKey, gocui.ModNone, noteTitleCursorRight); err != nil {
+		return err
+	}
+	if err := g.SetKeybinding("editNoteTitle", xKey, gocui.ModNone, noteTitleDeleteChar); err != nil {
+		return err
+	}
+	if err := g.SetKeybinding("editNoteTitle", gocui.KeyCtrlC, gocui.ModNone, noteTitleDisableEditable); err != nil {
+		return err
+	}
+
 	return nil
 }

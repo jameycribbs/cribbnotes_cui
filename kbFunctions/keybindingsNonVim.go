@@ -39,6 +39,16 @@ func KeybindingsNonVim(g *gocui.Gui) error {
 		return err
 	}
 
+	// Search string.
+	if err := g.SetKeybinding("toc", gocui.KeyCtrlF, gocui.ModNone, searchString); err != nil {
+		return err
+	}
+
+	// Abort Search.
+	if err := g.SetKeybinding("search", gocui.KeyCtrlF, gocui.ModNone, AbortSearch); err != nil {
+		return err
+	}
+
 	// New record.
 	if err := g.SetKeybinding("toc", gocui.KeyCtrlN, gocui.ModNone, newRec); err != nil {
 		return err
@@ -52,17 +62,5 @@ func KeybindingsNonVim(g *gocui.Gui) error {
 		return err
 	}
 
-	// Create record.
-	if err := g.SetKeybinding("newTitle", gocui.KeyEnter, gocui.ModNone, createNote); err != nil {
-		return err
-	}
-
-	// Delete record.
-	if err := g.SetKeybinding("toc", gocui.KeyCtrlD, gocui.ModNone, deleteRec); err != nil {
-		return err
-	}
-	if err := g.SetKeybinding("note", gocui.KeyCtrlD, gocui.ModNone, deleteRec); err != nil {
-		return err
-	}
 	return nil
 }

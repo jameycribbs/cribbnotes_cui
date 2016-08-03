@@ -24,6 +24,35 @@ func clearNoteViews(g *gocui.Gui) error {
 	return nil
 }
 
+func createMessageView(g *gocui.Gui, vName string, vTitle string, msg string) error {
+	var maxMsgLineLength int
+
+	msgLines := strings.Split(msg, "\n")
+
+	for _, msgLine := range msgLines {
+		lineLength := len(msgLine)
+
+		if lineLength > maxMsgLineLength {
+			maxMsgLineLength = lineLength
+		}
+	}
+
+	maxX, maxY := g.Size()
+
+	if v, err := g.SetView(vName, maxX/2-maxMsgLineLength/2-1, maxY/2, maxX/2+maxMsgLineLength/2+1, maxY/2+1+len(msgLines)); err != nil {
+		if err != gocui.ErrUnknownView {
+			return err
+		}
+
+		v.Title = vTitle
+
+		for _, msgLine := range msgLines {
+			fmt.Fprintln(v, msgLine)
+		}
+	}
+	return nil
+}
+
 func createInputView(g *gocui.Gui, vName string, vTitle string) error {
 	maxX, maxY := g.Size()
 

@@ -33,7 +33,7 @@ func main() {
 
 	if db.Count(config.DataDir) == 0 {
 		if err := createHelpNote(); err != nil {
-			panic(err)
+			panic(errors.New("(main) error creating help note: " + err.Error()))
 		}
 	}
 
@@ -73,18 +73,6 @@ func createHelpNote() error {
 	rec.Title = "CribbNotes Help"
 
 	rec.Text = "CribbNotes is a simple, console-user-interface note taking application that stores it's data in json files.\n\n"
-	rec.Text += "------------------------- Keybindings ------------------------\n\n"
-	rec.Text += "[Down/Up]       - scroll line\n"
-	rec.Text += "[j/k]           - scroll line\n\n"
-	rec.Text += "[PgDown/PgUp]   - scroll page\n"
-	rec.Text += "[Ctrl+f/Ctrl+b] - scroll page\n\n"
-	rec.Text += "[Ctrl+Spacebar] - switch views\n"
-	rec.Text += "[Ctrl+j/Ctrl+k] - switch views\n\n"
-	rec.Text += "[Ctrl+/]        - find notes\n"
-	rec.Text += "[Ctrl+n]        - new note\n"
-	rec.Text += "[Ctrl+s]        - save note\n"
-	rec.Text += "[Ctrl+d]        - delete note\n"
-	rec.Text += "[Ctrl+q]        - quit\n"
 
 	rec.CreatedAt = time.Now()
 	rec.UpdatedAt = time.Now()
