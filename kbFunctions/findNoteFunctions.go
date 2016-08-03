@@ -48,7 +48,7 @@ func findNotes(g *gocui.Gui, v *gocui.View) error {
 }
 
 func searchString(g *gocui.Gui, v *gocui.View) error {
-	if err := createInputView(g, "search", "Enter word(s) to search on:"); err != nil {
+	if err := createInputView(g, "search", "Enter word(s) to search on:", true); err != nil {
 		return err
 	}
 

@@ -23,33 +23,6 @@ func AbortEditNoteTitle(g *gocui.Gui, v *gocui.View) error {
 	return nil
 }
 
-func saveNote(g *gocui.Gui, v *gocui.View) error {
-	fileID, err := getFileID(g, "toc")
-	if err != nil {
-		return err
-	}
-
-	rec, err := db.Find(config.DataDir, fileID)
-	if err != nil {
-		return err
-	}
-
-	rec.Text = v.Buffer()
-
-	rec.UpdatedAt = time.Now()
-
-	if err := db.Update(config.DataDir, rec, fileID); err != nil {
-		return err
-	}
-
-	updateStatus(g, "Note saved!")
-
-	if err := g.SetCurrentView("toc"); err != nil {
-		return err
-	}
-	return nil
-}
-
 func saveNoteTitle(g *gocui.Gui, v *gocui.View) error {
 	fileID, err := getFileID(g, "toc")
 	if err != nil {
@@ -93,7 +66,7 @@ func saveNoteTitle(g *gocui.Gui, v *gocui.View) error {
 }
 
 func showEditNoteTitle(g *gocui.Gui, v *gocui.View) error {
-	if err := createInputView(g, "editNoteTitle", "Note Title"); err != nil {
+	if err := createInputView(g, "editNoteTitle", "Note Title", !config.VimMode); err != nil {
 		return err
 	}
 

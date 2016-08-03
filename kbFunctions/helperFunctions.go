@@ -53,7 +53,7 @@ func createMessageView(g *gocui.Gui, vName string, vTitle string, msg string) er
 	return nil
 }
 
-func createInputView(g *gocui.Gui, vName string, vTitle string) error {
+func createInputView(g *gocui.Gui, vName string, vTitle string, editable bool) error {
 	maxX, maxY := g.Size()
 
 	if v, err := g.SetView(vName, maxX/2-30, maxY/2, maxX/2+30, maxY/2+2); err != nil {
@@ -62,7 +62,7 @@ func createInputView(g *gocui.Gui, vName string, vTitle string) error {
 		}
 
 		v.Title = vTitle
-		v.Editable = true
+		v.Editable = editable
 
 		if err := g.SetCurrentView(vName); err != nil {
 			return err

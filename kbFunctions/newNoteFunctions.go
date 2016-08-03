@@ -71,7 +71,7 @@ func createNote(g *gocui.Gui, v *gocui.View) error {
 }
 
 func newRec(g *gocui.Gui, v *gocui.View) error {
-	if err := createInputView(g, "newTitle", "Enter title for new note:"); err != nil {
+	if err := createInputView(g, "newTitle", "Enter title for new note:", true); err != nil {
 		return err
 	}
 
