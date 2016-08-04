@@ -7,8 +7,7 @@ import (
 	"github.com/jroimartin/gocui"
 )
 
-// AbortSearch deletes the search dialog.
-func AbortSearch(g *gocui.Gui, v *gocui.View) error {
+func abortSearch(g *gocui.Gui, v *gocui.View) error {
 	var err error
 
 	if err = g.DeleteView("search"); err != nil {
@@ -17,6 +16,25 @@ func AbortSearch(g *gocui.Gui, v *gocui.View) error {
 
 	if err = g.SetCurrentView("toc"); err != nil {
 		return errors.New("(AbortSearch) error setting current view to toc " + err.Error())
+	}
+	return nil
+}
+
+func clearCurrentFilter(g *gocui.Gui, v *gocui.View) error {
+	var err error
+
+	if err = PopulateToc(g, ""); err != nil {
+		return err
+	}
+
+	updateStatus(g, "Filter cleared.  Showing all notes.")
+
+	if err = g.SetCurrentView("toc"); err != nil {
+		return errors.New("(findNotes) error setting current view to toc: " + err.Error())
+	}
+
+	if err = ShowNote(g); err != nil {
+		return err
 	}
 	return nil
 }

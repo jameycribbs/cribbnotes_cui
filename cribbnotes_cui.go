@@ -13,6 +13,9 @@ import (
 )
 
 func main() {
+	var err error
+	var g *gocui.Gui
+
 	if len(os.Args) < 2 {
 		panic(errors.New("You must supply a command line argument for the location of the data directory!"))
 	}
@@ -27,34 +30,34 @@ func main() {
 		}
 	}
 
-	if err := os.MkdirAll(config.DataDir, os.ModePerm); err != nil {
+	if err = os.MkdirAll(config.DataDir, os.ModePerm); err != nil {
 		panic(errors.New("(main) error creating db directory: " + err.Error()))
 	}
 
 	if db.Count(config.DataDir) == 0 {
-		if err := createHelpNote(); err != nil {
+		if err = createHelpNote(); err != nil {
 			panic(errors.New("(main) error creating help note: " + err.Error()))
 		}
 	}
 
-	g := gocui.NewGui()
-	if err := g.Init(); err != nil {
+	g = gocui.NewGui()
+	if err = g.Init(); err != nil {
 		panic(errors.New("(main) error initiating gui: " + err.Error()))
 	}
 	defer g.Close()
 
 	g.SetLayout(layouts.Layout)
 
-	if err := kbFunctions.KeybindingsCommon(g); err != nil {
+	if err = kbFunctions.KeybindingsCommon(g); err != nil {
 		panic(err)
 	}
 
 	if config.VimMode {
-		if err := kbFunctions.KeybindingsVim(g); err != nil {
+		if err = kbFunctions.KeybindingsVim(g); err != nil {
 			panic(err)
 		}
 	} else {
-		if err := kbFunctions.KeybindingsNonVim(g); err != nil {
+		if err = kbFunctions.KeybindingsNonVim(g); err != nil {
 			panic(err)
 		}
 	}
@@ -63,13 +66,16 @@ func main() {
 	g.SelFgColor = gocui.ColorBlack
 	g.Cursor = true
 
-	if err := g.MainLoop(); err != nil && err != gocui.ErrQuit {
+	if err = g.MainLoop(); err != nil && err != gocui.ErrQuit {
 		panic(err)
 	}
 }
 
 func createHelpNote() error {
-	rec := db.Record{}
+	var err error
+	var rec db.Record
+
+	rec = db.Record{}
 	rec.Title = "CribbNotes Help"
 
 	rec.Text = "CribbNotes is a simple, console-user-interface note taking application that stores it's data in json files.\n\n"
@@ -77,7 +83,7 @@ func createHelpNote() error {
 	rec.CreatedAt = time.Now()
 	rec.UpdatedAt = time.Now()
 
-	_, err := db.Create(config.DataDir, &rec)
+	_, err = db.Create(config.DataDir, &rec)
 	if err != nil {
 		return err
 	}

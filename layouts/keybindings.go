@@ -1,6 +1,7 @@
 package layouts
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/jameycribbs/cribbnotes_cui/config"
@@ -8,11 +9,15 @@ import (
 )
 
 func keybindingsLayout(g *gocui.Gui) error {
-	maxX, maxY := g.Size()
+	var err error
+	var maxX, maxY int
+	var v *gocui.View
 
-	if v, err := g.SetView("help", maxX-32, 2, maxX, maxY-25); err != nil {
+	maxX, maxY = g.Size()
+
+	if v, err = g.SetView("help", maxX-34, 2, maxX, maxY-25); err != nil {
 		if err != gocui.ErrUnknownView {
-			return err
+			return errors.New("(keybindingsLayout) error setting view: " + err.Error())
 		}
 
 		v.Title = "[ Keybindings ]"
@@ -27,15 +32,20 @@ func keybindingsLayout(g *gocui.Gui) error {
 			fmt.Fprintln(v, "[Ctrl+i]        - new note")
 			fmt.Fprintln(v, "[Ctrl+w]        - save note")
 			fmt.Fprintln(v, "[Ctrl+d]        - delete note")
+			fmt.Fprintln(v, "[Ctrl+t]        - edit title")
+			fmt.Fprintln(v, "[Ctrl+x]        - dismiss dialog")
 			fmt.Fprintln(v, "[Ctrl+q]        - quit")
 		} else {
 			fmt.Fprintln(v, "[Down/Up]       - scroll line")
 			fmt.Fprintln(v, "[PgDown/PgUp]   - scroll page")
 			fmt.Fprintln(v, "[Ctrl+Spacebar] - switch views")
 			fmt.Fprintln(v, "[Ctrl+f]        - find notes")
+			fmt.Fprintln(v, "[Ctrl+c]        - clear filter")
 			fmt.Fprintln(v, "[Ctrl+n]        - new note")
 			fmt.Fprintln(v, "[Ctrl+s]        - save note")
 			fmt.Fprintln(v, "[Ctrl+d]        - delete note")
+			fmt.Fprintln(v, "[Ctrl+t]        - edit title")
+			fmt.Fprintln(v, "[Ctrl+x]        - dismiss dialog")
 			fmt.Fprintln(v, "[Ctrl+q]        - quit")
 		}
 	}

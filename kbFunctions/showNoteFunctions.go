@@ -35,7 +35,7 @@ func ShowNote(g *gocui.Gui) error {
 	}
 
 	if err = g.SetCurrentView("toc"); err != nil {
-		return errors.New("error setting current view to toc: " + err.Error())
+		return errors.New("(saveNote) error setting current view to toc: " + err.Error())
 	}
 
 	return nil

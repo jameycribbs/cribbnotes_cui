@@ -1,6 +1,7 @@
 package layouts
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/jroimartin/gocui"
@@ -9,11 +10,15 @@ import (
 var currentVersion = "1.0"
 
 func headlineLayout(g *gocui.Gui) error {
-	maxX, _ := g.Size()
+	var err error
+	var maxX int
+	var v *gocui.View
 
-	if v, err := g.SetView("headline", int(0.4*float32(maxX)), -1, int(0.4*float32(maxX))+19, 1); err != nil {
+	maxX, _ = g.Size()
+
+	if v, err = g.SetView("headline", int(0.4*float32(maxX)), -1, int(0.4*float32(maxX))+19, 1); err != nil {
 		if err != gocui.ErrUnknownView {
-			return err
+			return errors.New("(headlineLayout) error setting view: " + err.Error())
 		}
 		fmt.Fprintf(v, " CribbNotes v%v", currentVersion)
 	}

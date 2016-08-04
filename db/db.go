@@ -52,13 +52,14 @@ func (rec *Record) FormattedUpdatedAt() string {
 
 // Create writes a new record to the database.
 func Create(dataDir string, rec *Record) (string, error) {
-	fileID, err := nextAvailableFileID(dataDir)
-	if err != nil {
+	var fileID string
+	var err error
+
+	if fileID, err = nextAvailableFileID(dataDir); err != nil {
 		return "", err
 	}
 
-	err = writeRec(dataDir, rec, fileID)
-	if err != nil {
+	if err = writeRec(dataDir, rec, fileID); err != nil {
 		return "", err
 	}
 
@@ -72,11 +73,13 @@ func Count(dataDir string) int {
 
 // Delete removes a record from the database.
 func Delete(dataDir string, fileID string) error {
-	filename := filePath(dataDir, fileID)
+	var filename string
+	var err error
 
-	err := os.Remove(filename)
-	if err != nil {
-		return err
+	filename = filePath(dataDir, fileID)
+
+	if err = os.Remove(filename); err != nil {
+		return errors.New("(Delete) error doing os.Remove " + err.Error())
 	}
 
 	return nil
@@ -85,17 +88,18 @@ func Delete(dataDir string, fileID string) error {
 // Find returns the record from the database whose fileID matches the input.
 func Find(dataDir string, fileID string) (*Record, error) {
 	var rec *Record
+	var filename string
+	var data []byte
+	var err error
 
-	filename := filePath(dataDir, fileID)
+	filename = filePath(dataDir, fileID)
 
-	data, err := ioutil.ReadFile(filename)
-	if err != nil {
-		return rec, err
+	if data, err = ioutil.ReadFile(filename); err != nil {
+		return nil, errors.New("(Find) error doing ioutil.ReadFile " + err.Error())
 	}
 
-	err = json.Unmarshal(data, &rec)
-	if err != nil {
-		return rec, err
+	if err = json.Unmarshal(data, &rec); err != nil {
+		return nil, errors.New("(Find) error doing json.Unmarshal " + err.Error())
 	}
 
 	rec.FileID = fileID
@@ -108,28 +112,33 @@ func Search(dataDir string, searchString string) ([]Record, error) {
 	var results Records
 	var rec Record
 	var valuesFound int
+	var searchValues []string
+	var searchValue string
+	var searchValuesCount int
+	var fileID string
+	var filename string
+	var data []byte
+	var err error
 
-	searchValues := strings.Split(strings.ToLower(searchString), " ")
-	searchValuesCount := len(searchValues)
+	searchValues = strings.Split(strings.ToLower(searchString), " ")
+	searchValuesCount = len(searchValues)
 
-	for _, fileID := range fileIDsInDataDir(dataDir) {
-		filename := filePath(dataDir, fileID)
+	for _, fileID = range fileIDsInDataDir(dataDir) {
+		filename = filePath(dataDir, fileID)
 
-		data, err := ioutil.ReadFile(filename)
-		if err != nil {
-			return nil, err
+		if data, err = ioutil.ReadFile(filename); err != nil {
+			return nil, errors.New("(Search) error doing ioutil.ReadFile " + err.Error())
 		}
 
-		err = json.Unmarshal(data, &rec)
-		if err != nil {
-			return nil, err
+		if err = json.Unmarshal(data, &rec); err != nil {
+			return nil, errors.New("(Search) error doing json.Unmarshal " + err.Error())
 		}
 
 		rec.FileID = fileID
 
 		valuesFound = 0
 
-		for _, searchValue := range searchValues {
+		for _, searchValue = range searchValues {
 			if searchValue == "" || strings.Contains(strings.ToLower(rec.Title), searchValue) || strings.Contains(
 				strings.ToLower(rec.Text),
 				searchValue) {
@@ -151,27 +160,30 @@ func Search(dataDir string, searchString string) ([]Record, error) {
 
 // Update updates the record in the database whose fileID matches the input fileID.
 func Update(dataDir string, rec *Record, fileID string) error {
+	var err error
+
 	if stringInSlice(fileID, fileIDsInDataDir(dataDir)) {
-		err := writeRec(dataDir, rec, fileID)
-		if err != nil {
+		if err = writeRec(dataDir, rec, fileID); err != nil {
 			return err
 		}
 	} else {
-		return errors.New("File ID not found")
+		return errors.New("(Update) error File ID not found")
 	}
 	return nil
 }
 
 //*****************************************************************************
-// Private Methods
+// Private Functions
 //*****************************************************************************
 
 // fileIDsInDataDir returns all file ids in the data directory.
 func fileIDsInDataDir(dataDir string) []string {
 	var ids []string
+	var files []os.FileInfo
+	var file os.FileInfo
 
-	files, _ := ioutil.ReadDir(dataDir)
-	for _, file := range files {
+	files, _ = ioutil.ReadDir(dataDir)
+	for _, file = range files {
 		if !file.IsDir() {
 			if path.Ext(file.Name()) == ".json" {
 				ids = append(ids, file.Name()[:len(file.Name())-5])
@@ -189,11 +201,14 @@ func filePath(dataDir string, fileID string) string {
 
 // loadRec reads a json file into the supplied Note struct.
 func loadRec(dataDir string, rec Record, fileID string) error {
-	filename := filePath(dataDir, fileID)
+	var filename string
+	var data []byte
+	var err error
 
-	data, err := ioutil.ReadFile(filename)
-	if err != nil {
-		return err
+	filename = filePath(dataDir, fileID)
+
+	if data, err = ioutil.ReadFile(filename); err != nil {
+		return errors.New("(loadRec) error doing ioutil.ReadFile " + err.Error())
 	}
 
 	err = json.Unmarshal(data, rec)
@@ -206,11 +221,14 @@ func loadRec(dataDir string, rec Record, fileID string) error {
 func nextAvailableFileID(dataDir string) (string, error) {
 	var fileIDs []int
 	var nextFileID string
+	var strFileID string
+	var fileID int
+	var lastFileID int
+	var err error
 
-	for _, f := range fileIDsInDataDir(dataDir) {
-		fileID, err := strconv.Atoi(f)
-		if err != nil {
-			return "", err
+	for _, strFileID = range fileIDsInDataDir(dataDir) {
+		if fileID, err = strconv.Atoi(strFileID); err != nil {
+			return "", errors.New("(nextAvailableFileID) error doing strconv.Atoi " + err.Error())
 		}
 
 		fileIDs = append(fileIDs, fileID)
@@ -220,7 +238,7 @@ func nextAvailableFileID(dataDir string) (string, error) {
 		nextFileID = "1"
 	} else {
 		sort.Ints(fileIDs)
-		lastFileID := fileIDs[len(fileIDs)-1]
+		lastFileID = fileIDs[len(fileIDs)-1]
 
 		nextFileID = strconv.Itoa(lastFileID + 1)
 	}
@@ -228,9 +246,11 @@ func nextAvailableFileID(dataDir string) (string, error) {
 	return nextFileID, nil
 }
 
-func stringInSlice(s string, list []string) bool {
-	for _, x := range list {
-		if x == s {
+func stringInSlice(strToFind string, strSlice []string) bool {
+	var s string
+
+	for _, s = range strSlice {
+		if s == strToFind {
 			return true
 		}
 	}
@@ -238,17 +258,19 @@ func stringInSlice(s string, list []string) bool {
 }
 
 func writeRec(dataDir string, rec *Record, fileID string) error {
-	marshalledRec, err := json.Marshal(rec)
+	var marshalledRec []byte
+	var err error
+	var filename string
 
-	if err != nil {
-		return err
+	if marshalledRec, err = json.Marshal(rec); err != nil {
+		return errors.New("(writeRec) error doing json.Marshal " + err.Error())
 	}
 
-	filename := filePath(dataDir, fileID)
+	filename = filePath(dataDir, fileID)
 
 	err = ioutil.WriteFile(filename, marshalledRec, 0600)
 	if err != nil {
-		return err
+		return errors.New("(writeRec) error doing ioutil.WriteFile " + err.Error())
 	}
 
 	return nil

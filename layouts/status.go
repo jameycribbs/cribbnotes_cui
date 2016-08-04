@@ -1,13 +1,20 @@
 package layouts
 
-import "github.com/jroimartin/gocui"
+import (
+	"errors"
+
+	"github.com/jroimartin/gocui"
+)
 
 func statusLayout(g *gocui.Gui) error {
-	maxX, maxY := g.Size()
+	var maxX, maxY int
+	var err error
 
-	if _, err := g.SetView("status", -1, maxY-2, maxX, maxY); err != nil {
+	maxX, maxY = g.Size()
+
+	if _, err = g.SetView("status", -1, maxY-2, maxX, maxY); err != nil {
 		if err != gocui.ErrUnknownView {
-			return err
+			return errors.New("(statusLayout) error setting view: " + err.Error())
 		}
 	}
 

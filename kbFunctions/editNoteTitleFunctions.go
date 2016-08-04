@@ -12,13 +12,15 @@ import (
 )
 
 func abortEditNoteTitle(g *gocui.Gui, v *gocui.View) error {
-	if err := g.DeleteView("editNoteTitle"); err != nil {
-		return errors.New("(abortEditNoteTitle) error deleting editNoteTitle view " + err.Error())
-	}
+	var err error
 
 	updateStatus(g, "")
 
-	if err := g.SetCurrentView("toc"); err != nil {
+	if err = g.DeleteView("editNoteTitle"); err != nil {
+		return errors.New("(abortEditNoteTitle) error deleting editNoteTitle view " + err.Error())
+	}
+
+	if err = g.SetCurrentView("toc"); err != nil {
 		return errors.New("(abortEditNoteTitle) error setting current view to toc " + err.Error())
 	}
 
