@@ -63,7 +63,7 @@ func createNote(g *gocui.Gui, v *gocui.View) error {
 		return err
 	}
 
-	if err := g.SetCurrentView("note"); err != nil {
+	if err := g.SetCurrentView("noteDetail"); err != nil {
 		return err
 	}
 
@@ -75,7 +75,7 @@ func newRec(g *gocui.Gui, v *gocui.View) error {
 		return err
 	}
 
-	updateStatus(g, "Enter a title for the new note.  Press [Enter] when done.")
+	updateStatus(g, "Enter a title for the new note and press [Enter] to save.  Press [Ctrl-X] to abort.")
 
 	return nil
 }

@@ -9,14 +9,14 @@ import (
 )
 
 func abortDeleteNote(g *gocui.Gui, v *gocui.View) error {
-	updateStatus(g, "enter abort delete note")
-
 	if err := g.DeleteView("deleteNoteConfirm"); err != nil {
-		return err
+		return errors.New("(abortDeleteNote) error deleting deleteNoteConfirm view " + err.Error())
 	}
 
+	updateStatus(g, "")
+
 	if err := g.SetCurrentView("toc"); err != nil {
-		return err
+		return errors.New("(abortDeleteNote) error setting current view to toc " + err.Error())
 	}
 
 	return nil
@@ -24,7 +24,7 @@ func abortDeleteNote(g *gocui.Gui, v *gocui.View) error {
 
 func deleteNote(g *gocui.Gui, v *gocui.View) error {
 	if err := g.DeleteView("deleteNoteConfirm"); err != nil {
-		return err
+		return errors.New("(deleteNote) error deleting deleteNoteConfirm view " + err.Error())
 	}
 
 	fileID, err := getFileID(g, "toc")
@@ -34,7 +34,7 @@ func deleteNote(g *gocui.Gui, v *gocui.View) error {
 
 	if err := db.Delete(config.DataDir, fileID); err != nil {
 		if err := g.SetCurrentView("toc"); err != nil {
-			return errors.New("(deleteRec) error setting current view to toc " + err.Error())
+			return errors.New("(deleteNote) error setting current view to toc " + err.Error())
 		}
 		return err
 	}
@@ -63,7 +63,7 @@ func showDeleteNoteConfirm(g *gocui.Gui, v *gocui.View) error {
 	}
 
 	if err := g.SetCurrentView("deleteNoteConfirm"); err != nil {
-		return errors.New("(findNotes) error setting current view to deleteNoteConfirm: " + err.Error())
+		return errors.New("(showDeleteNoteConfirm) error setting current view to deleteNoteConfirm: " + err.Error())
 	}
 
 	return nil

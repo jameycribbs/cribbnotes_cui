@@ -28,10 +28,10 @@ func KeybindingsCommon(g *gocui.Gui) error {
 	if err := g.SetKeybinding("toc", gocui.KeyCtrlT, gocui.ModNone, showEditNoteTitle); err != nil {
 		return err
 	}
-	if err := g.SetKeybinding("note", gocui.KeyCtrlT, gocui.ModNone, showEditNoteTitle); err != nil {
+	if err := g.SetKeybinding("noteDetail", gocui.KeyCtrlT, gocui.ModNone, showEditNoteTitle); err != nil {
 		return err
 	}
-	if err := g.SetKeybinding("editNoteTitle", gocui.KeyCtrlC, gocui.ModNone, AbortEditNoteTitle); err != nil {
+	if err := g.SetKeybinding("editNoteTitle", gocui.KeyCtrlX, gocui.ModNone, abortEditNoteTitle); err != nil {
 		return err
 	}
 
@@ -39,7 +39,7 @@ func KeybindingsCommon(g *gocui.Gui) error {
 	if err := g.SetKeybinding("toc", gocui.KeyCtrlD, gocui.ModNone, showDeleteNoteConfirm); err != nil {
 		return err
 	}
-	if err := g.SetKeybinding("note", gocui.KeyCtrlD, gocui.ModNone, showDeleteNoteConfirm); err != nil {
+	if err := g.SetKeybinding("noteDetail", gocui.KeyCtrlD, gocui.ModNone, showDeleteNoteConfirm); err != nil {
 		return err
 	}
 	// Confirm delete note.
@@ -47,6 +47,9 @@ func KeybindingsCommon(g *gocui.Gui) error {
 		return err
 	}
 	if err := g.SetKeybinding("deleteNoteConfirm", nKey, gocui.ModNone, abortDeleteNote); err != nil {
+		return err
+	}
+	if err := g.SetKeybinding("deleteNoteConfirm", gocui.KeyCtrlX, gocui.ModNone, abortDeleteNote); err != nil {
 		return err
 	}
 

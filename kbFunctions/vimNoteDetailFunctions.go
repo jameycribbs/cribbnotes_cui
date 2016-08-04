@@ -207,7 +207,7 @@ func noteEnableEditableInsertBelow(g *gocui.Gui, v *gocui.View) error {
 }
 
 func noteDisableEditable(g *gocui.Gui, v *gocui.View) error {
-	noteView, err := g.View("note")
+	noteView, err := g.View("noteDetail")
 	if err != nil {
 		return err
 	}

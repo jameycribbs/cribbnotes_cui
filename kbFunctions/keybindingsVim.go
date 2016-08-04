@@ -10,7 +10,7 @@ func KeybindingsVim(g *gocui.Gui) error {
 	if err := g.SetKeybinding("toc", gocui.KeyCtrlJ, gocui.ModNone, nextView); err != nil {
 		return err
 	}
-	if err := g.SetKeybinding("note", gocui.KeyCtrlK, gocui.ModNone, nextView); err != nil {
+	if err := g.SetKeybinding("noteDetail", gocui.KeyCtrlK, gocui.ModNone, nextView); err != nil {
 		return err
 	}
 
@@ -29,7 +29,7 @@ func KeybindingsVim(g *gocui.Gui) error {
 	}
 
 	// Save a record.
-	if err := g.SetKeybinding("note", gocui.KeyCtrlW, gocui.ModNone, saveNote); err != nil {
+	if err := g.SetKeybinding("noteDetail", gocui.KeyCtrlW, gocui.ModNone, saveNote); err != nil {
 		return err
 	}
 
@@ -37,12 +37,10 @@ func KeybindingsVim(g *gocui.Gui) error {
 	if err := g.SetKeybinding("toc", gocui.KeyCtrlI, gocui.ModNone, newRec); err != nil {
 		return err
 	}
-	if err := g.SetKeybinding("note", gocui.KeyCtrlI, gocui.ModNone, newRec); err != nil {
+	if err := g.SetKeybinding("noteDetail", gocui.KeyCtrlI, gocui.ModNone, newRec); err != nil {
 		return err
 	}
-
-	// Abort new title.
-	if err := g.SetKeybinding("newTitle", gocui.KeyCtrlI, gocui.ModNone, AbortNewTitle); err != nil {
+	if err := g.SetKeybinding("newTitle", gocui.KeyCtrlX, gocui.ModNone, AbortNewTitle); err != nil {
 		return err
 	}
 
@@ -50,47 +48,45 @@ func KeybindingsVim(g *gocui.Gui) error {
 	if err := g.SetKeybinding("toc", gocui.KeyCtrlSlash, gocui.ModNone, searchString); err != nil {
 		return err
 	}
-
-	// Abort Search.
-	if err := g.SetKeybinding("search", gocui.KeyCtrlSlash, gocui.ModNone, AbortSearch); err != nil {
+	if err := g.SetKeybinding("search", gocui.KeyCtrlX, gocui.ModNone, AbortSearch); err != nil {
 		return err
 	}
 
 	// Navigation inside note view
-	if err := g.SetKeybinding("note", gocui.KeyCtrlF, gocui.ModNone, notePageDown); err != nil {
+	if err := g.SetKeybinding("noteDetail", gocui.KeyCtrlF, gocui.ModNone, notePageDown); err != nil {
 		return err
 	}
-	if err := g.SetKeybinding("note", gocui.KeyCtrlB, gocui.ModNone, notePageUp); err != nil {
+	if err := g.SetKeybinding("noteDetail", gocui.KeyCtrlB, gocui.ModNone, notePageUp); err != nil {
 		return err
 	}
-	if err := g.SetKeybinding("note", gocui.KeyCtrlC, gocui.ModNone, noteDisableEditable); err != nil {
+	if err := g.SetKeybinding("noteDetail", gocui.KeyCtrlC, gocui.ModNone, noteDisableEditable); err != nil {
 		return err
 	}
-	if err := g.SetKeybinding("note", hKey, gocui.ModNone, noteCursorLeft); err != nil {
+	if err := g.SetKeybinding("noteDetail", hKey, gocui.ModNone, noteCursorLeft); err != nil {
 		return err
 	}
-	if err := g.SetKeybinding("note", iKey, gocui.ModNone, noteEnableEditable); err != nil {
+	if err := g.SetKeybinding("noteDetail", iKey, gocui.ModNone, noteEnableEditable); err != nil {
 		return err
 	}
-	if err := g.SetKeybinding("note", jKey, gocui.ModNone, noteCursorDown); err != nil {
+	if err := g.SetKeybinding("noteDetail", jKey, gocui.ModNone, noteCursorDown); err != nil {
 		return err
 	}
-	if err := g.SetKeybinding("note", kKey, gocui.ModNone, noteCursorUp); err != nil {
+	if err := g.SetKeybinding("noteDetail", kKey, gocui.ModNone, noteCursorUp); err != nil {
 		return err
 	}
-	if err := g.SetKeybinding("note", lKey, gocui.ModNone, noteCursorRight); err != nil {
+	if err := g.SetKeybinding("noteDetail", lKey, gocui.ModNone, noteCursorRight); err != nil {
 		return err
 	}
-	if err := g.SetKeybinding("note", aKey, gocui.ModNone, noteEnableEditableNextChar); err != nil {
+	if err := g.SetKeybinding("noteDetail", aKey, gocui.ModNone, noteEnableEditableNextChar); err != nil {
 		return err
 	}
-	if err := g.SetKeybinding("note", OKey, gocui.ModNone, noteEnableEditableInsertAbove); err != nil {
+	if err := g.SetKeybinding("noteDetail", OKey, gocui.ModNone, noteEnableEditableInsertAbove); err != nil {
 		return err
 	}
-	if err := g.SetKeybinding("note", oKey, gocui.ModNone, noteEnableEditableInsertBelow); err != nil {
+	if err := g.SetKeybinding("noteDetail", oKey, gocui.ModNone, noteEnableEditableInsertBelow); err != nil {
 		return err
 	}
-	if err := g.SetKeybinding("note", xKey, gocui.ModNone, noteDeleteChar); err != nil {
+	if err := g.SetKeybinding("noteDetail", xKey, gocui.ModNone, noteDeleteChar); err != nil {
 		return err
 	}
 

@@ -1,6 +1,7 @@
 package kbFunctions
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 	"time"
@@ -10,84 +11,86 @@ import (
 	"github.com/jroimartin/gocui"
 )
 
-// AbortEditNoteTitle deletes the edit note title dialog.
-func AbortEditNoteTitle(g *gocui.Gui, v *gocui.View) error {
+func abortEditNoteTitle(g *gocui.Gui, v *gocui.View) error {
 	if err := g.DeleteView("editNoteTitle"); err != nil {
-		return err
+		return errors.New("(abortEditNoteTitle) error deleting editNoteTitle view " + err.Error())
 	}
 
+	updateStatus(g, "")
+
 	if err := g.SetCurrentView("toc"); err != nil {
-		return err
+		return errors.New("(abortEditNoteTitle) error setting current view to toc " + err.Error())
 	}
 
 	return nil
 }
 
 func saveNoteTitle(g *gocui.Gui, v *gocui.View) error {
-	fileID, err := getFileID(g, "toc")
-	if err != nil {
+	var fileID string
+	var err error
+	var note *db.Record
+
+	if fileID, err = getFileID(g, "toc"); err != nil {
 		return err
 	}
 
-	rec, err := db.Find(config.DataDir, fileID)
-	if err != nil {
+	if note, err = db.Find(config.DataDir, fileID); err != nil {
 		return err
 	}
 
-	title := strings.TrimSuffix(v.ViewBuffer(), "\n")
+	note.Title = strings.TrimSuffix(v.ViewBuffer(), "\n")
+	note.UpdatedAt = time.Now()
 
-	rec.Title = title
-
-	rec.UpdatedAt = time.Now()
-
-	if err := db.Update(config.DataDir, rec, fileID); err != nil {
+	if err = db.Update(config.DataDir, note, fileID); err != nil {
 		return err
 	}
 
 	updateStatus(g, "Note title saved!")
 
-	if err := PopulateToc(g, ""); err != nil {
+	if err = PopulateToc(g, ""); err != nil {
 		return err
 	}
 
-	if err := ShowNote(g); err != nil {
+	if err = ShowNote(g); err != nil {
 		return err
 	}
 
-	if err := g.SetCurrentView("toc"); err != nil {
-		return err
+	if err = g.SetCurrentView("toc"); err != nil {
+		return errors.New("(saveNoteTitle) error setting current view to toc " + err.Error())
 	}
 
-	if err := g.DeleteView("editNoteTitle"); err != nil {
-		return err
+	if err = g.DeleteView("editNoteTitle"); err != nil {
+		return errors.New("(saveNoteTitle) error deleting editNoteTitle view " + err.Error())
 	}
 
 	return nil
 }
 
 func showEditNoteTitle(g *gocui.Gui, v *gocui.View) error {
-	if err := createInputView(g, "editNoteTitle", "Note Title", !config.VimMode); err != nil {
+	var fileID string
+	var err error
+	var note *db.Record
+	var editNoteTitleView *gocui.View
+
+	if err = createInputView(g, "editNoteTitle", "Note Title", !config.VimMode); err != nil {
 		return err
 	}
 
-	fileID, err := getFileID(g, "toc")
-	if err != nil {
+	if fileID, err = getFileID(g, "toc"); err != nil {
 		return err
 	}
 
-	rec, err := db.Find(config.DataDir, fileID)
-	if err != nil {
+	if note, err = db.Find(config.DataDir, fileID); err != nil {
 		return err
 	}
 
-	editNoteTitleView, err := g.View("editNoteTitle")
-	if err != nil {
-		return err
+	if editNoteTitleView, err = g.View("editNoteTitle"); err != nil {
+		return errors.New("(showEditNoteTitle) error getting editNoteTitle view " + err.Error())
 	}
 
-	fmt.Fprint(editNoteTitleView, rec.Title)
+	fmt.Fprint(editNoteTitleView, note.Title)
 
-	updateStatus(g, "Update note title and press [Enter] to save.  Press [Ctrl-C] to abort.")
+	updateStatus(g, "Update note title and press [Enter] to save.  Press [Ctrl-X] to abort.")
 
 	return nil
 }

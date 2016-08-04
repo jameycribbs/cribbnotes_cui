@@ -32,10 +32,10 @@ func noteNumberLayout(g *gocui.Gui) error {
 	return nil
 }
 
-func noteLayout(g *gocui.Gui) error {
+func noteDetailLayout(g *gocui.Gui) error {
 	maxX, maxY := g.Size()
 
-	if v, err := g.SetView("note", 0, maxY-22, maxX-1, maxY-3); err != nil {
+	if v, err := g.SetView("noteDetail", 0, maxY-22, maxX-1, maxY-3); err != nil {
 		if err != gocui.ErrUnknownView {
 			return err
 		}

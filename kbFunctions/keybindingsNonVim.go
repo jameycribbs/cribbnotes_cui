@@ -8,7 +8,7 @@ func KeybindingsNonVim(g *gocui.Gui) error {
 	if err := g.SetKeybinding("toc", gocui.KeyCtrlSpace, gocui.ModNone, nextView); err != nil {
 		return err
 	}
-	if err := g.SetKeybinding("note", gocui.KeyCtrlSpace, gocui.ModNone, nextView); err != nil {
+	if err := g.SetKeybinding("noteDetail", gocui.KeyCtrlSpace, gocui.ModNone, nextView); err != nil {
 		return err
 	}
 
@@ -27,15 +27,15 @@ func KeybindingsNonVim(g *gocui.Gui) error {
 	}
 
 	// Navigate inside note view.
-	if err := g.SetKeybinding("note", gocui.KeyPgdn, gocui.ModNone, notePageDown); err != nil {
+	if err := g.SetKeybinding("noteDetail", gocui.KeyPgdn, gocui.ModNone, notePageDown); err != nil {
 		return err
 	}
-	if err := g.SetKeybinding("note", gocui.KeyPgup, gocui.ModNone, notePageUp); err != nil {
+	if err := g.SetKeybinding("noteDetail", gocui.KeyPgup, gocui.ModNone, notePageUp); err != nil {
 		return err
 	}
 
 	// Save a record.
-	if err := g.SetKeybinding("note", gocui.KeyCtrlS, gocui.ModNone, saveNote); err != nil {
+	if err := g.SetKeybinding("noteDetail", gocui.KeyCtrlS, gocui.ModNone, saveNote); err != nil {
 		return err
 	}
 
@@ -43,9 +43,7 @@ func KeybindingsNonVim(g *gocui.Gui) error {
 	if err := g.SetKeybinding("toc", gocui.KeyCtrlF, gocui.ModNone, searchString); err != nil {
 		return err
 	}
-
-	// Abort Search.
-	if err := g.SetKeybinding("search", gocui.KeyCtrlF, gocui.ModNone, AbortSearch); err != nil {
+	if err := g.SetKeybinding("search", gocui.KeyCtrlX, gocui.ModNone, AbortSearch); err != nil {
 		return err
 	}
 
@@ -53,12 +51,10 @@ func KeybindingsNonVim(g *gocui.Gui) error {
 	if err := g.SetKeybinding("toc", gocui.KeyCtrlN, gocui.ModNone, newRec); err != nil {
 		return err
 	}
-	if err := g.SetKeybinding("note", gocui.KeyCtrlN, gocui.ModNone, newRec); err != nil {
+	if err := g.SetKeybinding("noteDetail", gocui.KeyCtrlN, gocui.ModNone, newRec); err != nil {
 		return err
 	}
-
-	// Abort new title.
-	if err := g.SetKeybinding("newTitle", gocui.KeyCtrlN, gocui.ModNone, AbortNewTitle); err != nil {
+	if err := g.SetKeybinding("newTitle", gocui.KeyCtrlX, gocui.ModNone, AbortNewTitle); err != nil {
 		return err
 	}
 
