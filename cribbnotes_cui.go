@@ -5,6 +5,8 @@ import (
 	"os"
 	"time"
 
+	"gopkg.in/alecthomas/kingpin.v2"
+
 	"github.com/jameycribbs/cribbnotes_cui/config"
 	"github.com/jameycribbs/cribbnotes_cui/db"
 	"github.com/jameycribbs/cribbnotes_cui/kbFunctions"
@@ -15,20 +17,16 @@ import (
 func main() {
 	var err error
 	var g *gocui.Gui
+	var dataDir *string
+	var vimMode *bool
 
-	if len(os.Args) < 2 {
-		panic(errors.New("You must supply a command line argument for the location of the data directory!"))
-	}
+	dataDir = kingpin.Arg("datadir", "Data directory.").Required().String()
+	vimMode = kingpin.Flag("vim-mode", "Vim mode.").Bool()
 
-	config.DataDir = os.Args[1]
+	kingpin.Parse()
 
-	if len(os.Args) > 2 {
-		if os.Args[2] == "--vim" {
-			config.VimMode = true
-		} else {
-			config.VimMode = false
-		}
-	}
+	config.DataDir = *dataDir
+	config.VimMode = *vimMode
 
 	if err = os.MkdirAll(config.DataDir, os.ModePerm); err != nil {
 		panic(errors.New("(main) error creating db directory: " + err.Error()))
