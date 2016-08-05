@@ -15,7 +15,7 @@ import (
 
 // Record defines the fields of the note.
 type Record struct {
-	FileID    string    `json:"-"y`
+	FileID    string    `json:"-"`
 	Title     string    `json:"title"`
 	Text      string    `json:"text"`
 	CreatedAt time.Time `json:"created_at"`
