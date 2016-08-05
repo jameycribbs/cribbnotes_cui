@@ -27,7 +27,8 @@ func noteCursorDown(g *gocui.Gui, v *gocui.View) error {
 	cx, cy = v.Cursor()
 
 	if line, err = v.Line(cy + 1); err != nil {
-		return errors.New("(noteCursorDown) error getting line: " + err.Error())
+		// Went past end of document.
+		return nil
 	}
 
 	if len(line) == 0 {

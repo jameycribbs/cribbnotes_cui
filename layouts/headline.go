@@ -7,7 +7,7 @@ import (
 	"github.com/jroimartin/gocui"
 )
 
-var currentVersion = "1.0"
+var currentVersion = "1.1"
 
 func headlineLayout(g *gocui.Gui) error {
 	var err error
