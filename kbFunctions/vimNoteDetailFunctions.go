@@ -110,14 +110,15 @@ func noteCursorUp(g *gocui.Gui, v *gocui.View) error {
 
 	cx, cy = v.Cursor()
 
-	if cy == 0 {
-		return nil
-	}
+	//	if cy == 0 {
+	//		return nil
+	//	}
 
 	ox, oy = v.Origin()
 
 	if line, err = v.Line(cy - 1); err != nil {
-		return errors.New("(noteCursorUp) error getting line: " + err.Error())
+		// Went past beginning of document.
+		return nil
 	}
 
 	if len(line) == 0 {
