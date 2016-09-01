@@ -13,6 +13,8 @@ import (
 func abortNewTitle(g *gocui.Gui, v *gocui.View) error {
 	var err error
 
+	updateStatus(g, "")
+
 	if err = g.DeleteView("newTitle"); err != nil {
 		return errors.New("(abortNewTitle) error deleting newTitle view: " + err.Error())
 	}
@@ -72,6 +74,8 @@ func createNote(g *gocui.Gui, v *gocui.View) error {
 		return errors.New("(createNote) error setting view to noteDetail: " + err.Error())
 	}
 
+	updateStatus(g, "")
+
 	return nil
 }
 
@@ -82,7 +86,7 @@ func newRec(g *gocui.Gui, v *gocui.View) error {
 		return err
 	}
 
-	updateStatus(g, "Enter a title for the new note and press [Enter] to save.  Press [Ctrl-X] to abort.")
+	updateStatus(g, "Enter a title for the new note and press [Enter] to save.  Press [Esc] to abort.")
 
 	return nil
 }

@@ -21,7 +21,10 @@ func tocLayout(g *gocui.Gui) error {
 
 		v.Highlight = true
 		v.Wrap = true
-		v.Title = "[ Table of Contents ]"
+
+		if err = kbFunctions.UpdateFilterMsg(g, ""); err != nil {
+			return err
+		}
 
 		if err = kbFunctions.PopulateToc(g, ""); err != nil {
 			return err

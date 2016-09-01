@@ -1,7 +1,6 @@
 package kbFunctions
 
 import (
-	"errors"
 	"time"
 
 	"github.com/jameycribbs/cribbnotes_cui/config"
@@ -12,6 +11,7 @@ import (
 func saveNote(g *gocui.Gui, v *gocui.View) error {
 	var fileID string
 	var err error
+	var noteDetailView *gocui.View
 	var rec *db.Record
 
 	fileID, err = getFileID(g, "toc")
@@ -24,7 +24,11 @@ func saveNote(g *gocui.Gui, v *gocui.View) error {
 		return err
 	}
 
-	rec.Text = v.Buffer()
+	if noteDetailView, err = g.View("noteDetail"); err != nil {
+		return err
+	}
+
+	rec.Text = noteDetailView.Buffer()
 
 	rec.UpdatedAt = time.Now()
 
@@ -34,8 +38,5 @@ func saveNote(g *gocui.Gui, v *gocui.View) error {
 
 	updateStatus(g, "Note saved!")
 
-	if err = g.SetCurrentView("toc"); err != nil {
-		return errors.New("(saveNote) error setting current view to toc: " + err.Error())
-	}
 	return nil
 }

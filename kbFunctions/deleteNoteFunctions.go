@@ -57,8 +57,8 @@ func deleteNote(g *gocui.Gui, v *gocui.View) error {
 }
 
 func showDeleteNoteConfirm(g *gocui.Gui, v *gocui.View) error {
-	var fileID string
 	var err error
+	var fileID string
 
 	if fileID, err = getFileID(g, "toc"); err != nil {
 		return err

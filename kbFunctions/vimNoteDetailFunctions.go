@@ -2,9 +2,62 @@ package kbFunctions
 
 import (
 	"errors"
+	"strconv"
 
 	"github.com/jroimartin/gocui"
 )
+
+func noteBeginningOfLine(g *gocui.Gui, v *gocui.View) error {
+	var cy, oy int
+	var err error
+
+	if v.Editable {
+		return nil
+	}
+
+	_, cy = v.Cursor()
+
+	if err = v.SetCursor(0, cy); err != nil {
+		_, oy = v.Origin()
+		if err = v.SetOrigin(0, oy); err != nil {
+			return errors.New("(noteBeginningOfLine) error setting origin: " + err.Error())
+		}
+	}
+	return nil
+}
+
+func noteEndOfLine(g *gocui.Gui, v *gocui.View) error {
+	var cy, oy int
+	var err error
+	var lineLength int
+	var line string
+
+	if v.Editable {
+		return nil
+	}
+
+	_, cy = v.Cursor()
+
+	if line, err = v.Line(cy); err != nil {
+		return errors.New("(noteEndOfLine) error getting line: " + err.Error())
+	}
+
+	lineLength = len(line)
+
+	updateStatus(g, strconv.Itoa(lineLength))
+
+	if lineLength > 0 {
+		lineLength -= 1
+	}
+
+	if err = v.SetCursor(lineLength, cy); err != nil {
+		_, oy = v.Origin()
+		if err = v.SetOrigin(lineLength, oy); err != nil {
+			return errors.New("(noteEndOfLine) error setting origin: " + err.Error())
+		}
+	}
+	return nil
+}
 
 func noteDeleteChar(g *gocui.Gui, v *gocui.View) error {
 	if v.Editable {

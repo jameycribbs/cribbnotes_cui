@@ -52,8 +52,8 @@ func (rec *Record) FormattedUpdatedAt() string {
 
 // Create writes a new record to the database.
 func Create(dataDir string, rec *Record) (string, error) {
-	var fileID string
 	var err error
+	var fileID string
 
 	if fileID, err = nextAvailableFileID(dataDir); err != nil {
 		return "", err
@@ -73,8 +73,8 @@ func Count(dataDir string) int {
 
 // Delete removes a record from the database.
 func Delete(dataDir string, fileID string) error {
-	var filename string
 	var err error
+	var filename string
 
 	filename = filePath(dataDir, fileID)
 
@@ -87,10 +87,10 @@ func Delete(dataDir string, fileID string) error {
 
 // Find returns the record from the database whose fileID matches the input.
 func Find(dataDir string, fileID string) (*Record, error) {
-	var rec *Record
-	var filename string
 	var data []byte
 	var err error
+	var filename string
+	var rec *Record
 
 	filename = filePath(dataDir, fileID)
 
@@ -109,16 +109,16 @@ func Find(dataDir string, fileID string) (*Record, error) {
 
 // Search returns the record from the database whose Title or Text fields contain the searchString.
 func Search(dataDir string, searchString string) ([]Record, error) {
-	var results Records
-	var rec Record
-	var valuesFound int
-	var searchValues []string
-	var searchValue string
-	var searchValuesCount int
-	var fileID string
-	var filename string
 	var data []byte
 	var err error
+	var fileID string
+	var filename string
+	var rec Record
+	var results Records
+	var searchValue string
+	var searchValues []string
+	var searchValuesCount int
+	var valuesFound int
 
 	searchValues = strings.Split(strings.ToLower(searchString), " ")
 	searchValuesCount = len(searchValues)
@@ -178,9 +178,9 @@ func Update(dataDir string, rec *Record, fileID string) error {
 
 // fileIDsInDataDir returns all file ids in the data directory.
 func fileIDsInDataDir(dataDir string) []string {
-	var ids []string
-	var files []os.FileInfo
 	var file os.FileInfo
+	var files []os.FileInfo
+	var ids []string
 
 	files, _ = ioutil.ReadDir(dataDir)
 	for _, file = range files {
@@ -201,9 +201,9 @@ func filePath(dataDir string, fileID string) string {
 
 // loadRec reads a json file into the supplied Note struct.
 func loadRec(dataDir string, rec Record, fileID string) error {
-	var filename string
 	var data []byte
 	var err error
+	var filename string
 
 	filename = filePath(dataDir, fileID)
 
@@ -219,12 +219,12 @@ func loadRec(dataDir string, rec Record, fileID string) error {
 // nextAvailableFileID returns the next ascending available file id in a
 // directory.
 func nextAvailableFileID(dataDir string) (string, error) {
+	var err error
+	var fileID int
 	var fileIDs []int
+	var lastFileID int
 	var nextFileID string
 	var strFileID string
-	var fileID int
-	var lastFileID int
-	var err error
 
 	for _, strFileID = range fileIDsInDataDir(dataDir) {
 		if fileID, err = strconv.Atoi(strFileID); err != nil {
@@ -258,9 +258,9 @@ func stringInSlice(strToFind string, strSlice []string) bool {
 }
 
 func writeRec(dataDir string, rec *Record, fileID string) error {
-	var marshalledRec []byte
 	var err error
 	var filename string
+	var marshalledRec []byte
 
 	if marshalledRec, err = json.Marshal(rec); err != nil {
 		return errors.New("(writeRec) error doing json.Marshal " + err.Error())

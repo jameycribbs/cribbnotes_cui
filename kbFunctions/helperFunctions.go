@@ -12,8 +12,8 @@ import (
 )
 
 func clearNoteViews(g *gocui.Gui) error {
-	var noteTitleView, noteNumberView, noteDetailView *gocui.View
 	var err error
+	var noteTitleView, noteNumberView, noteDetailView *gocui.View
 
 	if noteTitleView, noteNumberView, noteDetailView, err = getNoteViews(g); err != nil {
 		return err
@@ -27,10 +27,10 @@ func clearNoteViews(g *gocui.Gui) error {
 }
 
 func createMessageView(g *gocui.Gui, vName string, vTitle string, msg string) error {
+	var err error
+	var lineLength, maxMsgLineLength, maxX, maxY int
 	var msgLine string
 	var msgLines []string
-	var lineLength, maxMsgLineLength, maxX, maxY int
-	var err error
 	var v *gocui.View
 
 	msgLines = strings.Split(msg, "\n")
@@ -60,9 +60,9 @@ func createMessageView(g *gocui.Gui, vName string, vTitle string, msg string) er
 }
 
 func createInputView(g *gocui.Gui, vName string, vTitle string, editable bool) error {
+	var err error
 	var maxX, maxY int
 	var v *gocui.View
-	var err error
 
 	maxX, maxY = g.Size()
 
@@ -82,11 +82,11 @@ func createInputView(g *gocui.Gui, vName string, vTitle string, editable bool) e
 }
 
 func getFileID(g *gocui.Gui, vName string) (string, error) {
-	var v *gocui.View
-	var err error
 	var cy int
-	var lineParts []string
+	var err error
 	var line string
+	var lineParts []string
+	var v *gocui.View
 
 	if v, err = g.View(vName); err != nil {
 		return "", errors.New("(getFileID) error grabbing handle to view in getFileID: " + err.Error())
@@ -107,8 +107,8 @@ func getFileID(g *gocui.Gui, vName string) (string, error) {
 }
 
 func getNoteViews(g *gocui.Gui) (*gocui.View, *gocui.View, *gocui.View, error) {
-	var noteTitleView, noteNumberView, noteDetailView *gocui.View
 	var err error
+	var noteTitleView, noteNumberView, noteDetailView *gocui.View
 
 	if noteTitleView, err = g.View("noteTitle"); err != nil {
 		return nil, nil, nil, errors.New("(getNoteViews) error grabbing handle to noteTitleView: " + err.Error())
@@ -127,11 +127,11 @@ func getNoteViews(g *gocui.Gui) (*gocui.View, *gocui.View, *gocui.View, error) {
 
 // PopulateToc searches for notes and populates the table of contents.
 func PopulateToc(g *gocui.Gui, searchStr string) error {
-	var tocView *gocui.View
 	var err error
-	var notes []db.Record
-	var note db.Record
 	var fileID int
+	var note db.Record
+	var notes []db.Record
+	var tocView *gocui.View
 
 	if tocView, err = g.View("toc"); err != nil {
 		return errors.New("(PopulateToc) error grabbing handle to toc view: " + err.Error())
@@ -163,8 +163,8 @@ func PopulateToc(g *gocui.Gui, searchStr string) error {
 }
 
 func showNoteInNoteView(g *gocui.Gui, rec *db.Record) error {
-	var noteTitleView, noteNumberView, noteDetailView *gocui.View
 	var err error
+	var noteTitleView, noteNumberView, noteDetailView *gocui.View
 
 	if err = clearNoteViews(g); err != nil {
 		return err
@@ -186,10 +186,10 @@ func showNoteInNoteView(g *gocui.Gui, rec *db.Record) error {
 }
 
 func scrollToFileID(g *gocui.Gui, fileID string) error {
-	var tocView *gocui.View
-	var err error
 	var cx, cy, ox, oy int
+	var err error
 	var nextFileID string
+	var tocView *gocui.View
 
 	if tocView, err = g.View("toc"); err != nil {
 		return errors.New("(scrollToFileID) error getting to view: " + err.Error())
@@ -216,8 +216,8 @@ func scrollToFileID(g *gocui.Gui, fileID string) error {
 }
 
 func updateStatus(g *gocui.Gui, msg string) error {
-	var statusView *gocui.View
 	var err error
+	var statusView *gocui.View
 
 	if statusView, err = g.View("status"); err != nil {
 		return err
@@ -234,6 +234,23 @@ func updateStatus(g *gocui.Gui, msg string) error {
 	}
 
 	fmt.Fprint(statusView, msg)
+
+	return nil
+}
+
+func UpdateFilterMsg(g *gocui.Gui, msg string) error {
+	var err error
+	var tocView *gocui.View
+
+	if tocView, err = g.View("toc"); err != nil {
+		return err
+	}
+
+	if msg == "" {
+		tocView.Title = "[ Table of Contents ]"
+	} else {
+		tocView.Title = "[ Table of Contents (filtered on: '" + msg + "') ]"
+	}
 
 	return nil
 }

@@ -33,6 +33,9 @@ func tocCursorDown(g *gocui.Gui, v *gocui.View) error {
 		}
 
 	}
+
+	updateStatus(g, "")
+
 	return nil
 }
 
@@ -54,6 +57,9 @@ func tocCursorUp(g *gocui.Gui, v *gocui.View) error {
 		}
 
 	}
+
+	updateStatus(g, "")
+
 	return nil
 }
 
@@ -84,6 +90,9 @@ func tocPageDown(g *gocui.Gui, v *gocui.View) error {
 	if err = ShowNote(g); err != nil {
 		return err
 	}
+
+	updateStatus(g, "")
+
 	return nil
 }
 
@@ -106,5 +115,8 @@ func tocPageUp(g *gocui.Gui, v *gocui.View) error {
 	if err = ShowNote(g); err != nil {
 		return err
 	}
+
+	updateStatus(g, "")
+
 	return nil
 }

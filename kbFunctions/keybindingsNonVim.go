@@ -11,10 +11,10 @@ func KeybindingsNonVim(g *gocui.Gui) error {
 	var err error
 
 	// Navigate between toc and note views.
-	if err = g.SetKeybinding("toc", gocui.KeyCtrlSpace, gocui.ModNone, nextView); err != nil {
+	if err = g.SetKeybinding("toc", gocui.KeyF6, gocui.ModNone, nextView); err != nil {
 		return errors.New("(KeybindingsNonVim) error setting keybinding for nextView: " + err.Error())
 	}
-	if err = g.SetKeybinding("noteDetail", gocui.KeyCtrlSpace, gocui.ModNone, nextView); err != nil {
+	if err = g.SetKeybinding("noteDetail", gocui.KeyF6, gocui.ModNone, nextView); err != nil {
 		return errors.New("(KeybindingsNonVim) error setting keybinding for nextView: " + err.Error())
 	}
 
@@ -45,24 +45,6 @@ func KeybindingsNonVim(g *gocui.Gui) error {
 		return errors.New("(KeybindingsNonVim) error setting keybinding for saveNote: " + err.Error())
 	}
 
-	// Search string.
-	if err = g.SetKeybinding("toc", gocui.KeyCtrlF, gocui.ModNone, searchString); err != nil {
-		return errors.New("(KeybindingsNonVim) error setting keybinding for searchString: " + err.Error())
-	}
-	if err = g.SetKeybinding("noteDetail", gocui.KeyCtrlF, gocui.ModNone, searchString); err != nil {
-		return errors.New("(KeybindingsNonVim) error setting keybinding for searchString: " + err.Error())
-	}
-	if err = g.SetKeybinding("search", gocui.KeyCtrlX, gocui.ModNone, abortSearch); err != nil {
-		return errors.New("(KeybindingsNonVim) error setting keybinding for AbortSearch: " + err.Error())
-	}
-
-	// Clear current filter.
-	if err = g.SetKeybinding("toc", gocui.KeyCtrlC, gocui.ModNone, clearCurrentFilter); err != nil {
-		return errors.New("(KeybindingsNonVim) error setting keybinding for clearCurrentFilter: " + err.Error())
-	}
-	if err = g.SetKeybinding("noteDetail", gocui.KeyCtrlC, gocui.ModNone, clearCurrentFilter); err != nil {
-		return errors.New("(KeybindingsNonVim) error setting keybinding for clearCurrentFilter: " + err.Error())
-	}
 	// New record.
 	if err = g.SetKeybinding("toc", gocui.KeyCtrlN, gocui.ModNone, newRec); err != nil {
 		return errors.New("(KeybindingsNonVim) error setting keybinding for newRec: " + err.Error())
@@ -70,7 +52,7 @@ func KeybindingsNonVim(g *gocui.Gui) error {
 	if err = g.SetKeybinding("noteDetail", gocui.KeyCtrlN, gocui.ModNone, newRec); err != nil {
 		return errors.New("(KeybindingsNonVim) error setting keybinding for newRec: " + err.Error())
 	}
-	if err = g.SetKeybinding("newTitle", gocui.KeyCtrlX, gocui.ModNone, abortNewTitle); err != nil {
+	if err = g.SetKeybinding("newTitle", gocui.KeyEsc, gocui.ModNone, abortNewTitle); err != nil {
 		return errors.New("(KeybindingsNonVim) error setting keybinding for abortNewTitle: " + err.Error())
 	}
 

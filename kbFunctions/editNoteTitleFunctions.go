@@ -28,8 +28,8 @@ func abortEditNoteTitle(g *gocui.Gui, v *gocui.View) error {
 }
 
 func saveNoteTitle(g *gocui.Gui, v *gocui.View) error {
-	var fileID string
 	var err error
+	var fileID string
 	var note *db.Record
 
 	if fileID, err = getFileID(g, "toc"); err != nil {
@@ -69,10 +69,10 @@ func saveNoteTitle(g *gocui.Gui, v *gocui.View) error {
 }
 
 func showEditNoteTitle(g *gocui.Gui, v *gocui.View) error {
-	var fileID string
-	var err error
-	var note *db.Record
 	var editNoteTitleView *gocui.View
+	var err error
+	var fileID string
+	var note *db.Record
 
 	if err = createInputView(g, "editNoteTitle", "Note Title", !config.VimMode); err != nil {
 		return err
@@ -92,7 +92,7 @@ func showEditNoteTitle(g *gocui.Gui, v *gocui.View) error {
 
 	fmt.Fprint(editNoteTitleView, note.Title)
 
-	updateStatus(g, "Update note title and press [Enter] to save.  Press [Ctrl-X] to abort.")
+	updateStatus(g, "Update note title and press [Enter] to save.  Press [Esc] to abort.")
 
 	return nil
 }

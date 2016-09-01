@@ -8,8 +8,19 @@ import (
 
 // KeybindingsVim contains all the vim bindings.
 func KeybindingsVim(g *gocui.Gui) error {
-	var OKey, aKey, hKey, iKey, jKey, kKey, lKey, oKey, xKey rune = 79, 97, 104, 105, 106, 107, 108, 111, 120
+	var dollarSignKey, zeroKey, colonKey, OKey, aKey, hKey, iKey, jKey, kKey, lKey, oKey, xKey rune = 36, 48, 58, 79, 97, 104, 105, 106, 107, 108, 111, 120
 	var err error
+
+	// Ex Commands
+	if err = g.SetKeybinding("", colonKey, gocui.ModNone, exMode); err != nil {
+		return errors.New("(KeybindingsVim) error setting keybinding for exMode: " + err.Error())
+	}
+	if err = g.SetKeybinding("status", gocui.KeyEnter, gocui.ModNone, exExecuteCommand); err != nil {
+		return errors.New("(KeybindingsVim) error setting keybinding for exExecuteCommand: " + err.Error())
+	}
+	if err = g.SetKeybinding("status", gocui.KeyEsc, gocui.ModNone, abortExMode); err != nil {
+		return errors.New("(KeybindingsVim) error setting keybinding for abortExMode: " + err.Error())
+	}
 
 	// Navigate between toc and note views.
 	if err = g.SetKeybinding("toc", gocui.KeyCtrlJ, gocui.ModNone, nextView); err != nil {
@@ -45,26 +56,24 @@ func KeybindingsVim(g *gocui.Gui) error {
 	if err = g.SetKeybinding("noteDetail", gocui.KeyCtrlI, gocui.ModNone, newRec); err != nil {
 		return errors.New("(KeybindingsVim) error setting keybinding for newRec: " + err.Error())
 	}
-	if err = g.SetKeybinding("newTitle", gocui.KeyCtrlX, gocui.ModNone, abortNewTitle); err != nil {
+	if err = g.SetKeybinding("newTitle", gocui.KeyEsc, gocui.ModNone, abortNewTitle); err != nil {
 		return errors.New("(KeybindingsVim) error setting keybinding for abortNewTitle: " + err.Error())
 	}
 
-	// Search string.
-	if err = g.SetKeybinding("toc", gocui.KeyCtrlSlash, gocui.ModNone, searchString); err != nil {
-		return errors.New("(KeybindingsVim) error setting keybinding for searchString: " + err.Error())
-	}
-	if err = g.SetKeybinding("search", gocui.KeyCtrlX, gocui.ModNone, abortSearch); err != nil {
-		return errors.New("(KeybindingsVim) error setting keybinding for AbortSearch: " + err.Error())
-	}
-
 	// Navigation inside note view
+	if err = g.SetKeybinding("noteDetail", zeroKey, gocui.ModNone, noteBeginningOfLine); err != nil {
+		return errors.New("(KeybindingsVim) error setting keybinding for noteBeginningOfLine: " + err.Error())
+	}
+	if err = g.SetKeybinding("noteDetail", dollarSignKey, gocui.ModNone, noteEndOfLine); err != nil {
+		return errors.New("(KeybindingsVim) error setting keybinding for noteEndOfLine: " + err.Error())
+	}
 	if err = g.SetKeybinding("noteDetail", gocui.KeyCtrlF, gocui.ModNone, notePageDown); err != nil {
 		return errors.New("(KeybindingsVim) error setting keybinding for notePageDown: " + err.Error())
 	}
 	if err = g.SetKeybinding("noteDetail", gocui.KeyCtrlB, gocui.ModNone, notePageUp); err != nil {
 		return errors.New("(KeybindingsVim) error setting keybinding for notePageUp: " + err.Error())
 	}
-	if err = g.SetKeybinding("noteDetail", gocui.KeyCtrlC, gocui.ModNone, noteDisableEditable); err != nil {
+	if err = g.SetKeybinding("noteDetail", gocui.KeyEsc, gocui.ModNone, noteDisableEditable); err != nil {
 		return errors.New("(KeybindingsVim) error setting keybinding for noteDisableEditable: " + err.Error())
 	}
 	if err = g.SetKeybinding("noteDetail", hKey, gocui.ModNone, noteCursorLeft); err != nil {
@@ -111,7 +120,7 @@ func KeybindingsVim(g *gocui.Gui) error {
 	if err = g.SetKeybinding("editNoteTitle", xKey, gocui.ModNone, noteTitleDeleteChar); err != nil {
 		return errors.New("(KeybindingsVim) error setting keybinding for noteTitleDeleteChar: " + err.Error())
 	}
-	if err = g.SetKeybinding("editNoteTitle", gocui.KeyCtrlC, gocui.ModNone, noteTitleDisableEditable); err != nil {
+	if err = g.SetKeybinding("editNoteTitle", gocui.KeyEsc, gocui.ModNone, noteTitleDisableEditable); err != nil {
 		return errors.New("(KeybindingsVim) error setting keybinding for noteTitleDisableEditable: " + err.Error())
 	}
 

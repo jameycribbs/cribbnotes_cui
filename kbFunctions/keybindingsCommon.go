@@ -8,8 +8,8 @@ import (
 
 // KeybindingsCommon contains all the commong bindings.
 func KeybindingsCommon(g *gocui.Gui) error {
-	var nKey, yKey rune = 110, 121
 	var err error
+	var nKey, yKey rune = 110, 121
 
 	// Navigate between toc and note views.
 	if err = g.SetKeybinding("toc", gocui.KeyEnter, gocui.ModNone, nextView); err != nil {
@@ -36,7 +36,7 @@ func KeybindingsCommon(g *gocui.Gui) error {
 	if err = g.SetKeybinding("noteDetail", gocui.KeyCtrlT, gocui.ModNone, showEditNoteTitle); err != nil {
 		return errors.New("(Keybindings) error setting keybinding for showEditNoteTitle: " + err.Error())
 	}
-	if err = g.SetKeybinding("editNoteTitle", gocui.KeyCtrlX, gocui.ModNone, abortEditNoteTitle); err != nil {
+	if err = g.SetKeybinding("editNoteTitle", gocui.KeyEsc, gocui.ModNone, abortEditNoteTitle); err != nil {
 		return errors.New("(Keybindings) error setting keybinding for abortEditNoteTitle: " + err.Error())
 	}
 
@@ -54,13 +54,25 @@ func KeybindingsCommon(g *gocui.Gui) error {
 	if err = g.SetKeybinding("deleteNoteConfirm", nKey, gocui.ModNone, abortDeleteNote); err != nil {
 		return errors.New("(Keybindings) error setting keybinding for abortDeleteNote: " + err.Error())
 	}
-	if err = g.SetKeybinding("deleteNoteConfirm", gocui.KeyCtrlX, gocui.ModNone, abortDeleteNote); err != nil {
+	if err = g.SetKeybinding("deleteNoteConfirm", gocui.KeyEsc, gocui.ModNone, abortDeleteNote); err != nil {
 		return errors.New("(Keybindings) error setting keybinding for abortDeleteNote: " + err.Error())
 	}
 
+	// Search string.
+	if err = g.SetKeybinding("", gocui.KeyF3, gocui.ModNone, searchString); err != nil {
+		return errors.New("(Keybindings) error setting keybinding for searchString: " + err.Error())
+	}
+	if err = g.SetKeybinding("search", gocui.KeyEsc, gocui.ModNone, abortSearch); err != nil {
+		return errors.New("(Keybindings) error setting keybinding for AbortSearch: " + err.Error())
+	}
 	// Find notes.
 	if err = g.SetKeybinding("search", gocui.KeyEnter, gocui.ModNone, findNotes); err != nil {
 		return errors.New("(Keybindings) error setting keybinding for findNotes: " + err.Error())
 	}
+	// Clear current filter.
+	if err = g.SetKeybinding("", gocui.KeyF4, gocui.ModNone, clearCurrentFilter); err != nil {
+		return errors.New("(Keybindings) error setting keybinding for clearCurrentFilter: " + err.Error())
+	}
+
 	return nil
 }

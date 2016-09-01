@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"log"
 	"os"
 	"time"
 
@@ -15,9 +16,9 @@ import (
 )
 
 func main() {
+	var dataDir *string
 	var err error
 	var g *gocui.Gui
-	var dataDir *string
 	var vimMode *bool
 
 	dataDir = kingpin.Arg("datadir", "Data directory.").Required().String()
@@ -29,34 +30,36 @@ func main() {
 	config.VimMode = *vimMode
 
 	if err = os.MkdirAll(config.DataDir, os.ModePerm); err != nil {
-		panic(errors.New("(main) error creating db directory: " + err.Error()))
+		log.Fatal(errors.New("(main) error creating db directory: " + err.Error()))
 	}
 
 	if db.Count(config.DataDir) == 0 {
 		if err = createHelpNote(); err != nil {
-			panic(errors.New("(main) error creating help note: " + err.Error()))
+			log.Fatal(errors.New("(main) error creating help note: " + err.Error()))
 		}
 	}
 
 	g = gocui.NewGui()
 	if err = g.Init(); err != nil {
-		panic(errors.New("(main) error initiating gui: " + err.Error()))
+		log.Fatal(errors.New("(main) error initiating gui: " + err.Error()))
 	}
 	defer g.Close()
 
 	g.SetLayout(layouts.Layout)
 
+	g.InputEsc = true
+
 	if err = kbFunctions.KeybindingsCommon(g); err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	if config.VimMode {
 		if err = kbFunctions.KeybindingsVim(g); err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
 	} else {
 		if err = kbFunctions.KeybindingsNonVim(g); err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
 	}
 
@@ -65,7 +68,7 @@ func main() {
 	g.Cursor = true
 
 	if err = g.MainLoop(); err != nil && err != gocui.ErrQuit {
-		panic(err)
+		log.Fatal(err)
 	}
 }
 
